@@ -1,0 +1,7 @@
+businessUnit: dr
+maven:
+  version: 3.3.3
+
+site:
+    domain: jenkins-system-config-dsl.rei-cloud.com
+    source: target/docs

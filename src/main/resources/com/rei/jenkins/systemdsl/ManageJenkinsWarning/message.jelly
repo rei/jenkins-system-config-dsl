@@ -1,0 +1,12 @@
+<?jelly escape-by-default='true'?>
+<j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define" xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form">
+  <div class="alert alert-warning">
+    <b>System Configuration managed by Jenkins System Config DSL Plugin</b>
+    <br/>
+    Any configuration changes made through the UI will be overwritten when Jenkins restarts!
+    <j:if test="${it.configUrl != null}">
+        <br />
+        Update the configuration here: <a href="${it.configUrl}">${it.configUrl}</a>
+    </j:if>
+  </div>
+</j:jelly>
