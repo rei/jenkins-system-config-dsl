@@ -1,0 +1,107 @@
+<head>
+    <style>
+        html {
+            background: #eee;
+            padding: 0 20px;
+        }
+
+        body {
+            background-color: #ffffff;
+            font-family: sans-serif;
+            font-size: 11pt;
+            padding: 50px;
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        h1 {
+            padding-bottom: 25px;
+        }
+
+        .method {
+            padding: 20px;
+            margin:20px;
+            border-color: lightgrey;
+            border-left-style: solid;
+        }
+
+        .params {
+            padding: 0;
+        }
+
+        .plugin {
+            font-style: italic;
+            color: gray;
+        }
+
+        .example {
+            list-style: none;
+            background-color: #666;
+            display: inline-block;
+            color:white;
+            padding: 0 0 0 5pt;
+            border-radius: 5px 10px 10px 5px;
+            margin-bottom: 15px;
+            margin-right: -1px;
+        }
+
+        .example pre {
+            margin: 0;
+            color: black;
+            background-color: #eee;
+            padding: 5pt;
+            display: inline-block;
+            width: auto;
+            border-radius: 0 5px 5px 0;
+        }
+
+        .helptext {}
+
+        .arg-help {}
+
+        .valid-values {
+            margin-top: 10px;
+            padding-left: 20px;
+        }
+
+        .valid-values li {
+            font-family: monospace;
+        }
+
+        .signature {
+            font-weight: bold;
+            font-family: monospace;
+            font-size: 14pt;
+            padding-bottom: 10px;
+            display: block;
+        }
+
+        .signature:hover {
+            color:blue;
+        }
+
+        /* Show a down arrow for visible methods*/
+        .arrow:before {
+            content:"\25bc";
+        }
+
+        /* Show a right arrow for hidden methods*/
+        .hide .arrow:before {
+            /* hidden arrows */
+            content:"\25ba";
+        }
+
+        /* hide child methods and fields */
+        .hide ~ .method,.hide ~ .plugin,.hide ~ .params,.hide ~ .helptext{
+            max-height: 50px;
+            overflow: hidden;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<h1>Jenkins System Config DSL Plugin</h1>
+
+    <!--GROOVY METHODS-->
+
+</body>

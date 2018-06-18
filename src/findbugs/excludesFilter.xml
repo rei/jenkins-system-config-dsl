@@ -1,0 +1,6 @@
+<FindBugsFilter>
+    <Match>
+        <!-- worthless check for groovy because of closures -->
+        <Bug pattern="SE_NO_SERIALVERSIONID" />
+    </Match>
+</FindBugsFilter>
