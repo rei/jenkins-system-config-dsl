@@ -29,7 +29,7 @@ class ApiDocGenerator {
     static void main(String[] args) {
         boolean isHtml
         def outFile
-
+        println args
         if(args.length >= 1 && (args[0] == '-txt' || args[0] == '-html')) {
             isHtml = args[0] == '-html'
         } else {
