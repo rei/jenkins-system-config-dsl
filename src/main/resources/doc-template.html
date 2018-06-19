@@ -99,8 +99,61 @@
         }
     </style>
 </head>
-<body>
+<b>
 <h1>Jenkins System Config DSL Plugin</h1>
+<p>
+    This is a Jenkins plugin that takes advantage of a Jenkins feature where it runs any groovy scripts located
+    in $JENKINS_HOME/init.groovy.d on startup. These scripts have full access to any classes defined in any installed plugins
+    which is how the System DSL plugin is hooked in. The plugin follows a similar pattern to the Job DSL Plugin and
+    exposes a Groovy based DSL to configure the Jenkins System Configuration and all of the plugins.
+</p>
+<div class="example">
+    Example: <br/>
+    <pre>
+com.rei.jenkins.systemdsl.JenkinsSystemConfigDsl.configure  {
+  global {
+      url("https://jenkins.rei.com/")
+      environmentVariables([TZ: 'America/Los_Angeles'])
+      quietPeriod(5)
+  }
+
+  masterNode {
+      numExecutors(4)
+      mode(Node.Mode.NORMAL)
+  }
+
+  git {
+      author("Jenkins", "jenkins@rei.com")
+  }
+
+  ...
+}
+    </pre>
+</div>
+<h2>Docker Usage</h2>
+<p>
+    The typical way to use this plugin is with a custom docker image that includes the configuration script and this plugin.
+</p>
+
+<div class="example">
+    Example: <br/>
+    <pre>
+FROM jenkins/jenkins:2.107.2-alpine
+COPY --chown=1000:1000 plugins.txt /usr/share/jenkins/ref/plugins.txt
+COPY --chown=1000:1000 init.groovy /usr/share/jenkins/ref/init.groovy.d/init.groovy.override
+
+# suppresses the new install wizard
+RUN echo "2.107.2" > /usr/share/jenkins/ref/jenkins.install.UpgradeWizard.state && \
+  echo "2.107.2" > /usr/share/jenkins/ref/jenkins.install.InstallUtil.lastExecVersion
+# installs the plugins, the file contains <pluginid>:<version> one per line
+RUN /usr/local/bin/install-plugins.sh < /usr/share/jenkins/ref/plugins.txt
+...
+ADD --chown=1000:1000 "$nexus/releases/com/rei/jenkins/systemdsl/jenkins-system-config-dsl/$dslversion/jenkins-system-config-dsl-$dslversion.hpi" "$refplugins_dir/jenkins-system-config-dsl.hpi.override"
+    </pre>
+</div>
+
+
+<h2>Method Reference</h2>
 
     <!--GROOVY METHODS-->
 

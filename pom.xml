@@ -286,13 +286,8 @@
                     <includeProjectDependencies>true</includeProjectDependencies>
                     <executable>java</executable>
                     <classpathScope>test</classpathScope>
-                    <arguments>
-                        <argument>-classpath</argument>
-                        <classpath/>
-                        <argument>com.rei.jenkins.systemdsl.doc.ApiDocGenerator</argument>
-                        <argument>-html</argument>
-                        <argument>./target/docs/index.html</argument>
-                    </arguments>
+                    <longClasspath>true</longClasspath>
+                    <commandlineArgs>-cp jarfile com.rei.jenkins.systemdsl.doc.ApiDocGenerator -html ./target/docs/index.html</commandlineArgs>
                 </configuration>
             </plugin>
             <plugin>
