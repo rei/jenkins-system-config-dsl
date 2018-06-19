@@ -1,0 +1,1680 @@
+<head>
+    <style>
+        html {
+            background: #eee;
+            padding: 0 20px;
+        }
+
+        body {
+            background-color: #ffffff;
+            font-family: sans-serif;
+            font-size: 11pt;
+            padding: 50px;
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        h1 {
+            padding-bottom: 25px;
+        }
+
+        .method {
+            padding: 20px;
+            margin:20px;
+            border-color: lightgrey;
+            border-left-style: solid;
+        }
+
+        .params {
+            padding: 0;
+        }
+
+        .plugin {
+            font-style: italic;
+            color: gray;
+        }
+
+        .example {
+            list-style: none;
+            background-color: #666;
+            display: inline-block;
+            color:white;
+            padding: 0 0 0 5pt;
+            border-radius: 5px 10px 10px 5px;
+            margin-bottom: 15px;
+            margin-right: -1px;
+        }
+
+        .example pre {
+            margin: 0;
+            color: black;
+            background-color: #eee;
+            padding: 5pt;
+            display: inline-block;
+            width: auto;
+            border-radius: 0 5px 5px 0;
+        }
+
+        .helptext {}
+
+        .arg-help {}
+
+        .valid-values {
+            margin-top: 10px;
+            padding-left: 20px;
+        }
+
+        .valid-values li {
+            font-family: monospace;
+        }
+
+        .signature {
+            font-weight: bold;
+            font-family: monospace;
+            font-size: 14pt;
+            padding-bottom: 10px;
+            display: block;
+        }
+
+        .signature:hover {
+            color:blue;
+        }
+
+        /* Show a down arrow for visible methods*/
+        .arrow:before {
+            content:"\25bc";
+        }
+
+        /* Show a right arrow for hidden methods*/
+        .hide .arrow:before {
+            /* hidden arrows */
+            content:"\25ba";
+        }
+
+        /* hide child methods and fields */
+        .hide ~ .method,.hide ~ .plugin,.hide ~ .params,.hide ~ .helptext{
+            max-height: 50px;
+            overflow: hidden;
+            display: none;
+        }
+    </style>
+</head>
+<b>
+<h1>Jenkins System Config DSL Plugin</h1>
+<p>
+    This is a Jenkins plugin that takes advantage of a Jenkins feature where it runs any groovy scripts located
+    in $JENKINS_HOME/init.groovy.d on startup. These scripts have full access to any classes defined in any installed plugins
+    which is how the System DSL plugin is hooked in. The plugin follows a similar pattern to the Job DSL Plugin and
+    exposes a Groovy based DSL to configure the Jenkins System Configuration and all of the plugins.
+</p>
+<div class="example">
+    Example: <br/>
+    <pre>
+com.rei.jenkins.systemdsl.JenkinsSystemConfigDsl.configure  {
+  global {
+      url("https://jenkins.rei.com/")
+      environmentVariables([TZ: 'America/Los_Angeles'])
+      quietPeriod(5)
+  }
+
+  masterNode {
+      numExecutors(4)
+      mode(Node.Mode.NORMAL)
+  }
+
+  git {
+      author("Jenkins", "jenkins@rei.com")
+  }
+
+  ...
+}
+    </pre>
+</div>
+<h2>Docker Usage</h2>
+<p>
+    The typical way to use this plugin is with a custom docker image that includes the configuration script and this plugin.
+</p>
+
+<div class="example">
+    Example: <br/>
+    <pre>
+FROM jenkins/jenkins:2.107.2-alpine
+COPY --chown=1000:1000 plugins.txt /usr/share/jenkins/ref/plugins.txt
+COPY --chown=1000:1000 init.groovy /usr/share/jenkins/ref/init.groovy.d/init.groovy.override
+
+# suppresses the new install wizard
+RUN echo "2.107.2" > /usr/share/jenkins/ref/jenkins.install.UpgradeWizard.state && \
+  echo "2.107.2" > /usr/share/jenkins/ref/jenkins.install.InstallUtil.lastExecVersion
+# installs the plugins, the file contains <pluginid>:<version> one per line
+RUN /usr/local/bin/install-plugins.sh < /usr/share/jenkins/ref/plugins.txt
+...
+ADD --chown=1000:1000 "$nexus/releases/com/rei/jenkins/systemdsl/jenkins-system-config-dsl/$dslversion/jenkins-system-config-dsl-$dslversion.hpi" "$refplugins_dir/jenkins-system-config-dsl.hpi.override"
+    </pre>
+</div>
+
+
+<h2>Method Reference</h2>
+
+    <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>awsHelpers()</a><div class="plugin"> Requires Plugin: aws-java-sdk</div>
+</div>
+<div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>clouds</a>
+    <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>awsHelpers()</a>    <div class="plugin"> Requires Plugin: aws-java-sdk</div>
+</div>
+
+
+    <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>ec2(String name)</a>    <ul class="params">
+    <li class="example"> Example: <pre>ec2('some value') { ... }</pre></li>
+    </ul>
+
+        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>ami</a>
+            <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>amiId(String ami)</a>            <div class="helptext"> 
+                the ami id to launch
+            </div> 
+            <ul class="params">
+            <li class="example"> Example: <pre>amiId('some value')</pre></li>
+            </ul>
+</div>
+
+
+            <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>amiLookup</a>
+                <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>architecture(String architecture)</a>                <ul class="params">
+                <li class="example"> Example: <pre>architecture('some value')</pre></li>
+                </ul>
+</div>
+
+
+                <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>awsHelpers()</a>                <div class="plugin"> Requires Plugin: aws-java-sdk</div>
+</div>
+
+
+                <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>description(String description)</a>                <ul class="params">
+                <li class="example"> Example: <pre>description('some value')</pre></li>
+                </ul>
+</div>
+
+
+                <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>executableUsers(List<String> arg0)</a>                <ul class="params">
+                <li class="example"> Example: <pre>executableUsers(null)</pre></li>
+                </ul>
+</div>
+
+
+                <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>filter(String key, String value)</a>                <div class="helptext"> 
+                    (Optional) One or more name/value pairs to filter off of.
+                 There are several valid keys, for a full reference, check out describe-images in the AWS CLI reference.
+                </div> 
+                <ul class="params">
+                <li class="example"> Example: <pre>filter('some value', 'some value')</pre></li>
+                </ul>
+</div>
+
+
+                <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>imageType(String type)</a>                <ul class="params">
+                <li class="example"> Example: <pre>imageType(machine)</pre></li>
+                <ul class="valid-values"> Valid Values: <li>machine</li><li>kernel</li><li>ramdisk</li></ul>
+                </ul>
+</div>
+
+
+                <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>name(String name)</a>                <ul class="params">
+                <li class="example"> Example: <pre>name('some value')</pre></li>
+                </ul>
+</div>
+
+
+                <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>nameRegex(String regex)</a>                <ul class="params">
+                <li class="example"> Example: <pre>nameRegex('some value')</pre></li>
+                </ul>
+</div>
+
+
+                <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>ownerAlias(String alias)</a>                <ul class="params">
+                <li class="example"> Example: <pre>ownerAlias(amazon)</pre></li>
+                <ul class="valid-values"> Valid Values: <li>amazon</li><li>aws-marketplace</li><li>microsoft</li></ul>
+                </ul>
+</div>
+
+
+                <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>owners(List<String> arg0)</a>                <ul class="params">
+                <li class="example"> Example: <pre>owners(null)</pre></li>
+                </ul>
+</div>
+
+
+                <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>platform(String platform)</a>                <ul class="params">
+                <li class="example"> Example: <pre>platform(windows)</pre></li>
+                <ul class="valid-values"> Valid Values: <li>windows</li></ul>
+                </ul>
+</div>
+
+
+                <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>scheduledUpdate(long interval, concurrent.TimeUnit unit)</a>                <ul class="params">
+                <li class="example"> Example: <pre>scheduledUpdate(4, TimeUnit.NANOSECONDS)</pre></li>
+                <ul class="valid-values"> Valid Values: <li>NANOSECONDS</li><li>MICROSECONDS</li><li>MILLISECONDS</li><li>SECONDS</li><li>MINUTES</li><li>HOURS</li><li>DAYS</li></ul>
+                </ul>
+</div>
+
+
+                <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>tag(String key, String value)</a>                <ul class="params">
+                <li class="example"> Example: <pre>tag('some value', 'some value')</pre></li>
+                </ul>
+</div>
+
+
+            </div>
+
+
+            <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>associatePublicIp()</a></div>
+
+
+            <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>availabilityZone(String zone)</a>            <ul class="params">
+            <li class="example"> Example: <pre>availabilityZone('some value')</pre></li>
+            </ul>
+</div>
+
+
+            <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>awsHelpers()</a>            <div class="plugin"> Requires Plugin: aws-java-sdk</div>
+</div>
+
+
+            <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>blockDeviceMapping(String blockDeviceMapping)</a>            <ul class="params">
+            <li class="example"> Example: <pre>blockDeviceMapping('some value')</pre></li>
+            </ul>
+</div>
+
+
+            <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>connectBySSHProcess()</a></div>
+
+
+            <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>connectUsingPublicIp()</a></div>
+
+
+            <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>deleteRootOnTermination()</a></div>
+
+
+            <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>description(String description)</a>            <ul class="params">
+            <li class="example"> Example: <pre>description('some value')</pre></li>
+            </ul>
+</div>
+
+
+            <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>ebsOptimized()</a></div>
+
+
+            <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>iamInstanceProfile(String iamInstanceProfile)</a>            <ul class="params">
+            <li class="example"> Example: <pre>iamInstanceProfile('some value')</pre></li>
+            </ul>
+</div>
+
+
+            <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>idleTerminationMinutes(int idleTerminationMinutes)</a>            <ul class="params">
+            <li class="example"> Example: <pre>idleTerminationMinutes(8)</pre></li>
+            </ul>
+</div>
+
+
+            <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>initScript(String initScript)</a>            <ul class="params">
+            <li class="example"> Example: <pre>initScript('some value')</pre></li>
+            </ul>
+</div>
+
+
+            <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>instanceCap(int instanceCap)</a>            <ul class="params">
+            <li class="example"> Example: <pre>instanceCap(3)</pre></li>
+            </ul>
+</div>
+
+
+            <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>instanceType(com.amazonaws.services.ec2.model.InstanceType type)</a>            <ul class="params">
+            <li class="example"> Example: <pre>instanceType(InstanceType.t1.micro)</pre></li>
+            <ul class="valid-values"> Valid Values: <li>t1.micro</li><li>t2.nano</li><li>t2.micro</li><li>t2.small</li><li>t2.medium</li><li>t2.large</li><li>t2.xlarge</li><li>t2.2xlarge</li><li>m1.small</li><li>m1.medium</li><li>m1.large</li><li>m1.xlarge</li><li>m3.medium</li><li>m3.large</li><li>m3.xlarge</li><li>m3.2xlarge</li><li>m4.large</li><li>m4.xlarge</li><li>m4.2xlarge</li><li>m4.4xlarge</li><li>m4.10xlarge</li><li>m4.16xlarge</li><li>m2.xlarge</li><li>m2.2xlarge</li><li>m2.4xlarge</li><li>cr1.8xlarge</li><li>r3.large</li><li>r3.xlarge</li><li>r3.2xlarge</li><li>r3.4xlarge</li><li>r3.8xlarge</li><li>r4.large</li><li>r4.xlarge</li><li>r4.2xlarge</li><li>r4.4xlarge</li><li>r4.8xlarge</li><li>r4.16xlarge</li><li>x1.16xlarge</li><li>x1.32xlarge</li><li>i2.xlarge</li><li>i2.2xlarge</li><li>i2.4xlarge</li><li>i2.8xlarge</li><li>i3.large</li><li>i3.xlarge</li><li>i3.2xlarge</li><li>i3.4xlarge</li><li>i3.8xlarge</li><li>i3.16xlarge</li><li>hi1.4xlarge</li><li>hs1.8xlarge</li><li>c1.medium</li><li>c1.xlarge</li><li>c3.large</li><li>c3.xlarge</li><li>c3.2xlarge</li><li>c3.4xlarge</li><li>c3.8xlarge</li><li>c4.large</li><li>c4.xlarge</li><li>c4.2xlarge</li><li>c4.4xlarge</li><li>c4.8xlarge</li><li>cc1.4xlarge</li><li>cc2.8xlarge</li><li>g2.2xlarge</li><li>g2.8xlarge</li><li>cg1.4xlarge</li><li>p2.xlarge</li><li>p2.8xlarge</li><li>p2.16xlarge</li><li>d2.xlarge</li><li>d2.2xlarge</li><li>d2.4xlarge</li><li>d2.8xlarge</li><li>f1.2xlarge</li><li>f1.16xlarge</li></ul>
+            </ul>
+</div>
+
+
+            <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>instanceType(String type)</a>            <ul class="params">
+            <li class="example"> Example: <pre>instanceType('some value')</pre></li>
+            </ul>
+</div>
+
+
+            <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>jvmopts(String jvmopts)</a>            <ul class="params">
+            <li class="example"> Example: <pre>jvmopts('some value')</pre></li>
+            </ul>
+</div>
+
+
+            <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>labels(List<String> arg0)</a>            <ul class="params">
+            <li class="example"> Example: <pre>labels(null)</pre></li>
+            </ul>
+</div>
+
+
+            <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>launchTimeout(int timeout)</a>            <ul class="params">
+            <li class="example"> Example: <pre>launchTimeout(3)</pre></li>
+            </ul>
+</div>
+
+
+            <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>mode(String mode)</a>            <ul class="params">
+            <li class="example"> Example: <pre>mode('NORMAL')</pre></li>
+            <ul class="valid-values"> Valid Values: <li>'NORMAL'</li><li>'EXCLUSIVE'</li></ul>
+            </ul>
+</div>
+
+
+            <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>mode(hudson.model.Node.Mode arg0)</a>            <ul class="params">
+            <li class="example"> Example: <pre>mode(Mode.NORMAL)</pre></li>
+            <ul class="valid-values"> Valid Values: <li>NORMAL</li><li>EXCLUSIVE</li></ul>
+            </ul>
+</div>
+
+
+            <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>numExecutors(int numExecutors)</a>            <ul class="params">
+            <li class="example"> Example: <pre>numExecutors(4)</pre></li>
+            </ul>
+</div>
+
+
+            <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>remoteFSRoot(String remoteFS)</a>            <ul class="params">
+            <li class="example"> Example: <pre>remoteFSRoot('some value')</pre></li>
+            </ul>
+</div>
+
+
+            <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>remoteUser(String remoteAdmin)</a>            <ul class="params">
+            <li class="example"> Example: <pre>remoteUser('some value')</pre></li>
+            </ul>
+</div>
+
+
+            <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>securityGroups(List<String> arg0)</a>            <ul class="params">
+            <li class="example"> Example: <pre>securityGroups(null)</pre></li>
+            </ul>
+</div>
+
+
+            <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>spotMaxBidPrice(String spotMaxBidPrice)</a>            <ul class="params">
+            <li class="example"> Example: <pre>spotMaxBidPrice('some value')</pre></li>
+            </ul>
+</div>
+
+
+            <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>stopOnTerminate()</a></div>
+
+
+            <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>subnetId(String subnetId)</a>            <ul class="params">
+            <li class="example"> Example: <pre>subnetId('some value')</pre></li>
+            </ul>
+</div>
+
+
+            <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>tag(String name, String value)</a>            <ul class="params">
+            <li class="example"> Example: <pre>tag('some value', 'some value')</pre></li>
+            </ul>
+</div>
+
+
+            <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>tmpDir(String tmpDir)</a>            <ul class="params">
+            <li class="example"> Example: <pre>tmpDir('some value')</pre></li>
+            </ul>
+</div>
+
+
+            <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>unix</a>
+                <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>awsHelpers()</a>                <div class="plugin"> Requires Plugin: aws-java-sdk</div>
+</div>
+
+
+                <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>rootCommandPrefix(String rootCommandPrefix)</a>                <ul class="params">
+                <li class="example"> Example: <pre>rootCommandPrefix('some value')</pre></li>
+                </ul>
+</div>
+
+
+                <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>slaveCommandPrefix(String slaveCommandPrefix)</a>                <ul class="params">
+                <li class="example"> Example: <pre>slaveCommandPrefix('some value')</pre></li>
+                </ul>
+</div>
+
+
+                <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>sshPort(int sshPort)</a>                <ul class="params">
+                <li class="example"> Example: <pre>sshPort(8)</pre></li>
+                </ul>
+</div>
+
+
+            </div>
+
+
+            <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>useDedicatedTenancy()</a></div>
+
+
+            <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>useEphemeralDevices()</a></div>
+
+
+            <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>usePrivateDnsName()</a></div>
+
+
+            <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>userData(String userData)</a>            <ul class="params">
+            <li class="example"> Example: <pre>userData('some value')</pre></li>
+            </ul>
+</div>
+
+
+            <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>windows</a>
+                <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>adminPassword(String password)</a>                <ul class="params">
+                <li class="example"> Example: <pre>adminPassword('some value')</pre></li>
+                </ul>
+</div>
+
+
+                <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>awsHelpers()</a>                <div class="plugin"> Requires Plugin: aws-java-sdk</div>
+</div>
+
+
+                <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>bootDelay(int bootDelay)</a>                <ul class="params">
+                <li class="example"> Example: <pre>bootDelay(7)</pre></li>
+                </ul>
+</div>
+
+
+                <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>useHttps()</a></div>
+
+
+            </div>
+
+
+        </div>
+
+
+        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>awsHelpers()</a>        <div class="plugin"> Requires Plugin: aws-java-sdk</div>
+</div>
+
+
+        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>credentials</a>
+            <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>awsHelpers()</a>            <div class="plugin"> Requires Plugin: aws-java-sdk</div>
+</div>
+
+
+            <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>credentialsId(String credentialsId)</a>            <ul class="params">
+            <li class="example"> Example: <pre>credentialsId('some value')</pre></li>
+            </ul>
+</div>
+
+
+            <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>instanceProfile()</a></div>
+
+
+        </div>
+
+
+        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>instanceCap(int cap)</a>        <ul class="params">
+        <li class="example"> Example: <pre>instanceCap(7)</pre></li>
+        </ul>
+</div>
+
+
+        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>privateKey(String privateKey)</a>        <ul class="params">
+        <li class="example"> Example: <pre>privateKey('some value')</pre></li>
+        </ul>
+</div>
+
+
+        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>region(String region)</a>        <ul class="params">
+        <li class="example"> Example: <pre>region('some value')</pre></li>
+        </ul>
+</div>
+
+
+    </div>
+
+
+</div>
+<div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>credentials</a>
+    <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>awsHelpers()</a>    <div class="plugin"> Requires Plugin: aws-java-sdk</div>
+</div>
+
+
+    <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>global</a>
+        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>awsCredentials(String id, String accessKey, String secretKey, String description)</a>        <ul class="params">
+        <li class="example"> Example: <pre>awsCredentials('some value', 'some value', 'some value', 'some value')</pre></li>
+        </ul>
+</div>
+
+
+        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>awsHelpers()</a>        <div class="plugin"> Requires Plugin: aws-java-sdk</div>
+</div>
+
+
+        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>certificate(String id, String passphrase, String pathOnMaster, String description)</a>        <ul class="params">
+        <li class="example"> Example: <pre>certificate('some value', 'some value', 'some value', 'some value')</pre></li>
+        </ul>
+</div>
+
+
+        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>secretFile(String id, String filename, String text, String description)</a>        <ul class="params">
+        <li class="example"> Example: <pre>secretFile('some value', 'some value', 'some value', 'some value')</pre></li>
+        </ul>
+</div>
+
+
+        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>secretFile(String id, String pathOnMaster, String description)</a>        <ul class="params">
+        <li class="example"> Example: <pre>secretFile('some value', 'some value', 'some value')</pre></li>
+        </ul>
+</div>
+
+
+        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>secretText(String id, String secret, String description)</a>        <ul class="params">
+        <li class="example"> Example: <pre>secretText('some value', 'some value', 'some value')</pre></li>
+        </ul>
+</div>
+
+
+        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>ssh(String id, String username, String privateKeyText, String description)</a>        <ul class="params">
+        <li class="example"> Example: <pre>ssh('some value', 'some value', 'some value', 'some value')</pre></li>
+        </ul>
+</div>
+
+
+        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>ssh(String id, String username, String passphrase, String pathOnMaster, String description)</a>        <ul class="params">
+        <li class="example"> Example: <pre>ssh('some value', 'some value', 'some value', 'some value', 'some value')</pre></li>
+        </ul>
+</div>
+
+
+        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>usernamePassword(String id, String username, String password, String description)</a>        <ul class="params">
+        <li class="example"> Example: <pre>usernamePassword('some value', 'some value', 'some value', 'some value')</pre></li>
+        </ul>
+</div>
+
+
+    </div>
+
+
+    <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>system</a>
+        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>awsCredentials(String id, String accessKey, String secretKey, String description)</a>        <ul class="params">
+        <li class="example"> Example: <pre>awsCredentials('some value', 'some value', 'some value', 'some value')</pre></li>
+        </ul>
+</div>
+
+
+        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>awsHelpers()</a>        <div class="plugin"> Requires Plugin: aws-java-sdk</div>
+</div>
+
+
+        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>certificate(String id, String passphrase, String pathOnMaster, String description)</a>        <ul class="params">
+        <li class="example"> Example: <pre>certificate('some value', 'some value', 'some value', 'some value')</pre></li>
+        </ul>
+</div>
+
+
+        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>secretFile(String id, String filename, String text, String description)</a>        <ul class="params">
+        <li class="example"> Example: <pre>secretFile('some value', 'some value', 'some value', 'some value')</pre></li>
+        </ul>
+</div>
+
+
+        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>secretFile(String id, String pathOnMaster, String description)</a>        <ul class="params">
+        <li class="example"> Example: <pre>secretFile('some value', 'some value', 'some value')</pre></li>
+        </ul>
+</div>
+
+
+        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>secretText(String id, String secret, String description)</a>        <ul class="params">
+        <li class="example"> Example: <pre>secretText('some value', 'some value', 'some value')</pre></li>
+        </ul>
+</div>
+
+
+        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>ssh(String id, String username, String privateKeyText, String description)</a>        <ul class="params">
+        <li class="example"> Example: <pre>ssh('some value', 'some value', 'some value', 'some value')</pre></li>
+        </ul>
+</div>
+
+
+        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>ssh(String id, String username, String passphrase, String pathOnMaster, String description)</a>        <ul class="params">
+        <li class="example"> Example: <pre>ssh('some value', 'some value', 'some value', 'some value', 'some value')</pre></li>
+        </ul>
+</div>
+
+
+        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>usernamePassword(String id, String username, String password, String description)</a>        <ul class="params">
+        <li class="example"> Example: <pre>usernamePassword('some value', 'some value', 'some value', 'some value')</pre></li>
+        </ul>
+</div>
+
+
+    </div>
+
+
+</div>
+<div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>extendedEmail</a><div class="plugin"> Requires Plugin: email-ext</div>
+
+    <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>adminRequiredForTemplateTesting(boolean adminRequiredForTemplateTesting)</a>    <div class="helptext"> 
+        When true Email Template Testing link will only show up for users with Administrator privileges.
+    </div> 
+    <ul class="params">
+    <li class="example"> Example: <pre>adminRequiredForTemplateTesting(false)</pre></li>
+    </ul>
+</div>
+
+
+    <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>adminRequiredForTemplateTesting()</a>    <div class="helptext"> 
+        Email Template Testing link will only show up for users with Administrator privileges.
+    </div> 
+</div>
+
+
+    <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>allowUnregistered(boolean enableAllowUnregistered)</a>    <div class="helptext"> 
+        When true allows emails to be sent to unregistered email addresses.
+     Security risk, see https://issues.jenkins-ci.org/browse/JENKINS-9016 for more information
+    </div> 
+    <ul class="params">
+    <li class="example"> Example: <pre>allowUnregistered(true)</pre></li>
+    </ul>
+</div>
+
+
+    <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>allowUnregistered()</a>    <div class="helptext"> 
+        Allows emails to be sent to unregistered email addresses.
+     Security risk, see https://issues.jenkins-ci.org/browse/JENKINS-9016 for more information
+    </div> 
+</div>
+
+
+    <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>authentication(String username, String password)</a>    <div class="helptext"> 
+        authentication information for the SMTP server
+    </div> 
+    <ul class="params">
+    <li class="example"> Example: <pre>authentication(jdoe, t0ps3cret)</pre></li>
+    </ul>
+</div>
+
+
+    <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>awsHelpers()</a>    <div class="plugin"> Requires Plugin: aws-java-sdk</div>
+</div>
+
+
+    <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>charset(String charset)</a>    <div class="helptext"> 
+        The charset to use for the text and subject.
+    </div> 
+    <ul class="params">
+    <li class="example"> Example: <pre>charset('some value')</pre></li>
+    </ul>
+</div>
+
+
+    <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>copySettingsFromMailer()</a>    <div class="helptext"> 
+        copies the base settings (server connection information, reply to) from the base Jenkins Mailer plugin
+    </div> 
+</div>
+
+
+    <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>defaultBody(String defaultBody)</a>    <div class="helptext"> 
+        Customize the default content of the email notifications. The plugin can replace certain tokens in the content field of
+     the email so that you can include special information from the build.
+    </div> 
+    <ul class="params">
+    <li class="example"> Example: <pre>defaultBody('some value')</pre></li>
+    </ul>
+</div>
+
+
+    <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>defaultContentType(String defaultContentType)</a>    <div class="helptext"> 
+        The default content type of the emails sent after a build.
+    </div> 
+    <ul class="params">
+    <li class="example"> Example: <pre>defaultContentType('some value')</pre></li>
+    </ul>
+</div>
+
+
+    <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>defaultPostsendScript(String defaultPostsendScript)</a>    <div class="helptext"> 
+        This script will be run after sending the email to allow acting upon the send result. The MimeMessage variable is "msg,"
+     the SMTPTransport "transport," the session properties "props," the build is also available as "build" and a logger is
+     available as "logger." The trigger that caused the email is available as "trigger" and all triggered builds are available
+     as a map "triggered."
+    
+     You can set the default post-send script here and then use ${DEFAULT_POSTSEND_SCRIPT} in the project settings to use the
+     script written here.
+    </div> 
+    <ul class="params">
+    <li class="example"> Example: <pre>defaultPostsendScript('some value')</pre></li>
+    </ul>
+</div>
+
+
+    <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>defaultPresendScript(String defaultPresendScript)</a>    <div class="helptext"> 
+        This script will be run prior to sending the email to allow modifying the email before sending. The MimeMessage variable is
+     "msg," the build is available as "build", a logger is available as "logger". The trigger that caused the email is available
+     as "trigger" and all triggered builds are available as a map "triggered."
+    
+     You may also cancel sending the email by setting the boolean variable "cancel" to true.
+    
+     You can set the default pre-send script here and then use ${DEFAULT_PRESEND_SCRIPT} in the project settings to use the
+     script written here.
+    </div> 
+    <ul class="params">
+    <li class="example"> Example: <pre>defaultPresendScript('some value')</pre></li>
+    </ul>
+</div>
+
+
+    <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>defaultRecipients(List<String> arg0)</a>    <ul class="params">
+    <li class="example"> Example: <pre>defaultRecipients(["jdoe@example.com", "jdoe2@example.com"])</pre></li>
+    </ul>
+</div>
+
+
+    <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>defaultRecipients(String recipientList)</a>    <div class="helptext"> 
+        Customize the default recipient list of the email notifications. The plugin will use this list if none is overridden
+     in the project configuration. You may use the $DEFAULT_RECIPIENTS token in projects to include this default list, as
+     well as add new addresses at the project level. To CC or BCC someone instead of putting them in the To list,
+     add cc: or bcc: before the email address (e.g., cc:someone@example.com, bcc:bob@example.com).
+    </div> 
+    <ul class="params">
+    <li class="example"> Example: <pre>defaultRecipients(jdoe@example.com)</pre></li>
+    </ul>
+</div>
+
+
+    <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>defaultReplyTo(String defaultReplyTo)</a>    <div class="helptext"> 
+        A comma separated list of e-mail addresses to use in the Reply-To header of the email.
+     This value will be available as $DEFAULT_REPLYTO in the project configuration.
+    </div> 
+    <ul class="params">
+    <li class="example"> Example: <pre>defaultReplyTo(jdoe@example.com)</pre></li>
+    </ul>
+</div>
+
+
+    <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>defaultSubject(String defaultSubject)</a>    <div class="helptext"> 
+        Customize the default subject line of the email notifications. The plugin can replace certain tokens in the subject field
+     of the email so that you can include special information from the build.
+    </div> 
+    <ul class="params">
+    <li class="example"> Example: <pre>defaultSubject('some value')</pre></li>
+    </ul>
+</div>
+
+
+    <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>defaultSuffix(String defaultSuffix)</a>    <ul class="params">
+    <li class="example"> Example: <pre>defaultSuffix(@example.com)</pre></li>
+    <li class="arg-help">If your users' e-mail addresses can be computed automatically by simply adding a suffix,   then specify that suffix. Otherwise leave it empty. Note that users can always override   the e-mail address selectively. For example, if this field is set to @acme.org,   then user foo will by default get the e-mail address foo@acme.org</li>
+    </ul>
+</div>
+
+
+    <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>enableWatching()</a>    <div class="helptext"> 
+        Enabling watching allows individual users to add their own triggers to jobs. The list of triggers they can add is
+     restricted by the trigger implementer. For example, most script based triggers are not allowed for users to use as a watch.
+     Users must have READ access to the job in order to watch it.
+    
+     Triggers are not stored in the job itself, but as a property on the user.
+    </div> 
+</div>
+
+
+    <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>enableWatching(boolean enableWatching)</a>    <div class="helptext"> 
+        Enabling watching allows individual users to add their own triggers to jobs. The list of triggers they can add is
+     restricted by the trigger implementer. For example, most script based triggers are not allowed for users to use as a watch.
+     Users must have READ access to the job in order to watch it.
+    
+     Triggers are not stored in the job itself, but as a property on the user.
+    </div> 
+    <ul class="params">
+    <li class="example"> Example: <pre>enableWatching(false)</pre></li>
+    </ul>
+</div>
+
+
+    <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>excludedCommitters(String excludedCommitters)</a>    <div class="helptext"> 
+        Allows filtering any email address from the list of recipients that is generated by the plugin.
+     You can specify either the username only or the full email address.
+    </div> 
+    <ul class="params">
+    <li class="example"> Example: <pre>excludedCommitters('some value')</pre></li>
+    </ul>
+</div>
+
+
+    <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>listId(String listId)</a>    <div class="helptext"> 
+        Set a List-ID header on all emails. This can help with filtering in email clients. It will also stop most
+      auto-responders from sending replies back to the sender (out-of-office, on-vacation, etc.)
+    
+      You can use whatever name and id you want, but the format should be similar to one of the following
+      (including the  signs around the actual id):
+          
+          Build Notifications 
+          "Build Notifications" 
+    
+     For a full description of the List-ID specification see RFC-2919.
+    </div> 
+    <ul class="params">
+    <li class="example"> Example: <pre>listId('Build Notifications <ci-notifications.company.org>')</pre></li>
+    </ul>
+</div>
+
+
+    <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>maxAttachmentSize(long maxAttachmentSize)</a>    <div class="helptext"> 
+        The maximum size (in MB) for all attachments. If left blank, there is no limit to the size of all attachments.
+    </div> 
+    <ul class="params">
+    <li class="example"> Example: <pre>maxAttachmentSize(7)</pre></li>
+    </ul>
+</div>
+
+
+    <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>precedenceBulk()</a>    <div class="helptext"> 
+        Set a 'Precedence: bulk' header on all emails. This will stop most auto-responders from sending replies back to the
+     sender (out-of-office, on-vacation, etc.)
+    </div> 
+</div>
+
+
+    <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>precedenceBulk(boolean precedenceBulk)</a>    <div class="helptext"> 
+        Set a 'Precedence: bulk' header on all emails. This will stop most auto-responders from sending replies back to the sender
+     (out-of-office, on-vacation, etc.)
+    </div> 
+    <ul class="params">
+    <li class="example"> Example: <pre>precedenceBulk(false)</pre></li>
+    </ul>
+</div>
+
+
+    <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>replyToAddress(String replyTo)</a>    <ul class="params">
+    <li class="example"> Example: <pre>replyToAddress(jdoe@example.com)</pre></li>
+    </ul>
+</div>
+
+
+    <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>scriptClasspath(List<String> arg0)</a>    <ul class="params">
+    <li class="example"> Example: <pre>scriptClasspath(null)</pre></li>
+    </ul>
+</div>
+
+
+    <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>smtpPort(int smtpPort)</a>    <ul class="params">
+    <li class="example"> Example: <pre>smtpPort(8)</pre></li>
+    <li class="arg-help">Port number for the mail server. Leave it empty to use the default port for the protocol.</li>
+    </ul>
+</div>
+
+
+    <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>smtpServer(String server)</a>    <div class="helptext"> 
+        sets the SMTP server to send email with
+    </div> 
+    <ul class="params">
+    <li class="example"> Example: <pre>smtpServer('somehost.example.com')</pre></li>
+    <li class="arg-help">Name of the mail server. Leave it empty to use the default server   (which is normally the one running on localhost).       Jenkins uses JavaMail for sending out e-mails, and JavaMail allows   additional settings to be given as system properties to the container.   See    this document for possible values and effects.</li>
+    </ul>
+</div>
+
+
+    <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>useSsl(boolean useSsl)</a>    <ul class="params">
+    <li class="example"> Example: <pre>useSsl(true)</pre></li>
+    <li class="arg-help">Whether or not to use SSL for connecting to the SMTP server. Defaults to port 465.       Other advanced configurations can be done by setting system properties.   See    this document for possible values and effects.</li>
+    </ul>
+</div>
+
+
+    <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>useSsl()</a>    <div class="helptext"> 
+        Whether or not to use SSL for connecting to the SMTP server. Defaults to port 465.       Other advanced configurations can be done by setting system properties.   See    this document for possible values and effects.
+    </div> 
+</div>
+
+
+</div>
+<div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>git</a><div class="plugin"> Requires Plugin: git</div>
+
+    <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>author(String name, String email)</a>    <div class="helptext"> 
+        Git author info
+    </div> 
+    <ul class="params">
+    <li class="example"> Example: <pre>author('John Doe', 'jdoe@example.com')</pre></li>
+    <li class="arg-help">If given, "git config user.name [this]" is called before builds. This can be overridden by individual projects.</li>
+    <li class="arg-help">If given, "git config user.email [this]" is called before builds. This can be overridden by individual projects.</li>
+    </ul>
+</div>
+
+
+    <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>awsHelpers()</a>    <div class="plugin"> Requires Plugin: aws-java-sdk</div>
+</div>
+
+
+</div>
+<div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>global</a>
+    <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>adminEmail(String email)</a>    <div class="helptext"> 
+        The email address of the jenkins admin
+    </div> 
+    <ul class="params">
+    <li class="example"> Example: <pre>adminEmail('jdoe@example.com')</pre></li>
+    </ul>
+</div>
+
+
+    <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>awsHelpers()</a>    <div class="plugin"> Requires Plugin: aws-java-sdk</div>
+</div>
+
+
+    <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>configUrl(String url)</a>    <div class="helptext"> 
+        url displayed in warning on Manage Jenkins page pointing at system config in source control for reference
+    </div> 
+    <ul class="params">
+    <li class="example"> Example: <pre>configUrl(https://git.company.com/jenkins/config.groovy)</pre></li>
+    </ul>
+</div>
+
+
+    <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>environmentVariables(Map<String, String> arg0)</a>    <ul class="params">
+    <li class="example"> Example: <pre>environmentVariables([SOME_GLOBAL_VAR: 'some value'])</pre></li>
+    </ul>
+</div>
+
+
+    <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>passwords</a>    <div class="plugin"> Requires Plugin: envinject</div>
+
+        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>password(String name, String value)</a>        <div class="helptext"> 
+            adds a 'global password' that will be injected as an environment variable in all jobs by the envinject plugin
+        </div> 
+        <ul class="params">
+        <li class="example"> Example: <pre>password('API_KEY', 't0ps3cret')</pre></li>
+        </ul>
+</div>
+
+
+    </div>
+
+
+    <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>quietPeriod(int period)</a>    <div class="helptext"> 
+        the amount of time to wait between scm commits to start a build
+    </div> 
+    <ul class="params">
+    <li class="example"> Example: <pre>quietPeriod(3)</pre></li>
+    </ul>
+</div>
+
+
+    <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>scmCheckoutRetryCount(int count)</a>    <div class="helptext"> 
+        sets the number of times to retry checking out source code
+    </div> 
+    <ul class="params">
+    <li class="example"> Example: <pre>scmCheckoutRetryCount(4)</pre></li>
+    </ul>
+</div>
+
+
+    <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>systemMessage(String msg)</a>    <div class="helptext"> 
+        system message that will be shown in a banner at the top of jenkins
+    </div> 
+    <ul class="params">
+    <li class="example"> Example: <pre>systemMessage('some system wide banner message')</pre></li>
+    </ul>
+</div>
+
+
+    <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>url(String url)</a>    <div class="helptext"> 
+        sets the base url for this Jenkins instance
+    </div> 
+    <ul class="params">
+    <li class="example"> Example: <pre>url('http://localhost:8080/')</pre></li>
+    </ul>
+</div>
+
+
+</div>
+<div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>mailer</a><div class="plugin"> Requires Plugin: mailer</div>
+
+    <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>authentication(String username, String password)</a>    <div class="helptext"> 
+        authentication information for the SMTP server
+    </div> 
+    <ul class="params">
+    <li class="example"> Example: <pre>authentication(jdoe, t0ps3cret)</pre></li>
+    </ul>
+</div>
+
+
+    <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>awsHelpers()</a>    <div class="plugin"> Requires Plugin: aws-java-sdk</div>
+</div>
+
+
+    <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>charset(String charset)</a>    <div class="helptext"> 
+        The charset to use for the text and subject.
+    </div> 
+    <ul class="params">
+    <li class="example"> Example: <pre>charset('some value')</pre></li>
+    </ul>
+</div>
+
+
+    <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>defaultSuffix(String defaultSuffix)</a>    <ul class="params">
+    <li class="example"> Example: <pre>defaultSuffix(@example.com)</pre></li>
+    <li class="arg-help">If your users' e-mail addresses can be computed automatically by simply adding a suffix,   then specify that suffix. Otherwise leave it empty. Note that users can always override   the e-mail address selectively. For example, if this field is set to @acme.org,   then user foo will by default get the e-mail address foo@acme.org</li>
+    </ul>
+</div>
+
+
+    <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>replyToAddress(String replyTo)</a>    <ul class="params">
+    <li class="example"> Example: <pre>replyToAddress(jdoe@example.com)</pre></li>
+    </ul>
+</div>
+
+
+    <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>smtpPort(int smtpPort)</a>    <ul class="params">
+    <li class="example"> Example: <pre>smtpPort(4)</pre></li>
+    <li class="arg-help">Port number for the mail server. Leave it empty to use the default port for the protocol.</li>
+    </ul>
+</div>
+
+
+    <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>smtpServer(String server)</a>    <div class="helptext"> 
+        sets the SMTP server to send email with
+    </div> 
+    <ul class="params">
+    <li class="example"> Example: <pre>smtpServer('somehost.example.com')</pre></li>
+    <li class="arg-help">Name of the mail server. Leave it empty to use the default server   (which is normally the one running on localhost).       Jenkins uses JavaMail for sending out e-mails, and JavaMail allows   additional settings to be given as system properties to the container.   See    this document for possible values and effects.</li>
+    </ul>
+</div>
+
+
+    <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>useSsl()</a>    <div class="helptext"> 
+        Whether or not to use SSL for connecting to the SMTP server. Defaults to port 465.       Other advanced configurations can be done by setting system properties.   See    this document for possible values and effects.
+    </div> 
+</div>
+
+
+    <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>useSsl(boolean useSsl)</a>    <ul class="params">
+    <li class="example"> Example: <pre>useSsl(true)</pre></li>
+    <li class="arg-help">Whether or not to use SSL for connecting to the SMTP server. Defaults to port 465.       Other advanced configurations can be done by setting system properties.   See    this document for possible values and effects.</li>
+    </ul>
+</div>
+
+
+</div>
+<div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>masterNode</a>
+    <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>awsHelpers()</a>    <div class="plugin"> Requires Plugin: aws-java-sdk</div>
+</div>
+
+
+    <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>labels(List<String> arg0)</a>    <ul class="params">
+    <li class="example"> Example: <pre>labels(['linux', 'build'])</pre></li>
+    </ul>
+</div>
+
+
+    <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>mode(String mode)</a>    <div class="helptext"> 
+        how to utilize this node
+    </div> 
+    <ul class="params">
+    <li class="example"> Example: <pre>mode('NORMAL')</pre></li>
+    <ul class="valid-values"> Valid Values: <li>'NORMAL'</li><li>'EXCLUSIVE'</li></ul>
+    </ul>
+</div>
+
+
+    <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>mode(hudson.model.Node.Mode arg0)</a>    <ul class="params">
+    <li class="example"> Example: <pre>mode(Mode.NORMAL)</pre></li>
+    <ul class="valid-values"> Valid Values: <li>NORMAL</li><li>EXCLUSIVE</li></ul>
+    </ul>
+</div>
+
+
+    <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>numExecutors(int num)</a>    <div class="helptext"> 
+        the number of executors on the Jenkins master node
+    </div> 
+    <ul class="params">
+    <li class="example"> Example: <pre>numExecutors(2)</pre></li>
+    </ul>
+</div>
+
+
+</div>
+<div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>rebuild</a>
+    <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>awsHelpers()</a>    <div class="plugin"> Requires Plugin: aws-java-sdk</div>
+</div>
+
+
+    <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>rememberPasswords()</a></div>
+
+
+    <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>rememberPasswords(boolean remember)</a>    <ul class="params">
+    <li class="example"> Example: <pre>rememberPasswords(false)</pre></li>
+    </ul>
+</div>
+
+
+</div>
+<div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>security</a>
+    <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>authorization</a>
+        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>anyoneCanDoAnything()</a>        <div class="helptext"> 
+            completely disables the Jenkins security subsystem
+        </div> 
+</div>
+
+
+        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>awsHelpers()</a>        <div class="plugin"> Requires Plugin: aws-java-sdk</div>
+</div>
+
+
+        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>loggedInUsersCanDoAnything()</a>        <div class="helptext"> 
+            allows any users who are authenticated to perform any action in Jenkins
+        </div> 
+</div>
+
+
+        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>matrixAuthorization</a>        <div class="plugin"> Requires Plugin: matrix-auth</div>
+        <div class="helptext"> 
+            In this scheme, you can configure who can do what.
+         a user or a group (often called 'role', depending on the security realm.) includes a special user 'anonymous',
+         which represents unauthenticated users, as well as
+         'authenticated', which represents all authenticated users (IOW, everyone except anonymous users.)
+         Permissions are additive. That is, if an user X is in group A, B, and C, then the permissions that this user
+         actually has are the union of all permissions given to X, A, B, C, and anonymous.
+        </div> 
+
+            <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>addPermission(String permission, String user)</a>            <div class="helptext"> 
+                adds a permission for the user
+             special permission aliases (case insensitive):
+               'ADMINISTER', 'FULL_CONTROL','READ','WRITE','CREATE','UPDATE','DELETE','CONFIGURE
+            
+             special user ids 'anonymous' and 'authenticated' are supported
+            </div> 
+            <ul class="params">
+            <li class="example"> Example: <pre>addPermission('some value', 'some value')</pre></li>
+            </ul>
+</div>
+
+
+        </div>
+
+
+        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>projectMatrixAuthorization</a>        <div class="plugin"> Requires Plugin: matrix-auth</div>
+        <div class="helptext"> 
+            an extension to "Matrix-based security" that allows additional ACL matrix to be defined for each project separately
+         This allows you to say things like "Joe can access project A, B, and C but he can't see D."
+         See the help of "Matrix-based security" for the concept of matrix-based security in general.
+         ACLs are additive, so the access rights granted below will be effective for all the projects.
+        </div> 
+
+            <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>addPermission(String permission, String user)</a>            <div class="helptext"> 
+                adds a permission for the user
+             special permission aliases (case insensitive):
+               'ADMINISTER', 'FULL_CONTROL','READ','WRITE','CREATE','UPDATE','DELETE','CONFIGURE
+            
+             special user ids 'anonymous' and 'authenticated' are supported
+            </div> 
+            <ul class="params">
+            <li class="example"> Example: <pre>addPermission('some value', 'some value')</pre></li>
+            </ul>
+</div>
+
+
+        </div>
+
+
+    </div>
+
+
+    <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>awsHelpers()</a>    <div class="plugin"> Requires Plugin: aws-java-sdk</div>
+</div>
+
+
+    <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>disableJobDslScriptSecurity()</a>    <div class="plugin"> Requires Plugin: job-dsl</div>
+    <div class="helptext"> 
+        disables the script security mechanism in the Job DSL Plugin
+    
+     Not recommended if this Jenkins instance allows untrusted users to create Job DSL jobs
+    </div> 
+</div>
+
+
+    <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>disableRememberMe()</a>    <div class="helptext"> 
+        remove the “Remember me on this computer” checkbox from the login screen.
+    </div> 
+</div>
+
+
+    <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>disableRemoteCli()</a>    <div class="helptext"> 
+        completely disables the Jenkins CLI
+    </div> 
+</div>
+
+
+    <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>ldap</a>    <div class="plugin"> Requires Plugin: ldap</div>
+
+        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>allowBlankRootDN(boolean allowBlankRootDN)</a>        <ul class="params">
+        <li class="example"> Example: <pre>allowBlankRootDN(false)</pre></li>
+        </ul>
+</div>
+
+
+        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>awsHelpers()</a>        <div class="plugin"> Requires Plugin: aws-java-sdk</div>
+</div>
+
+
+        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>displayNameAttributeName(String displayNameAttributeName)</a>        <ul class="params">
+        <li class="example"> Example: <pre>displayNameAttributeName('some value')</pre></li>
+        </ul>
+</div>
+
+
+        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>emailAddressAttributeName(String emailAddressAttributeName)</a>        <ul class="params">
+        <li class="example"> Example: <pre>emailAddressAttributeName('some value')</pre></li>
+        </ul>
+</div>
+
+
+        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>groupMembershipStrategy</a>
+            <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>groupSearch(String filter)</a>            <ul class="params">
+            <li class="example"> Example: <pre>groupSearch('some value')</pre></li>
+            </ul>
+</div>
+
+
+            <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>userSearch(String attribute)</a>            <ul class="params">
+            <li class="example"> Example: <pre>userSearch('some value')</pre></li>
+            </ul>
+</div>
+
+
+        </div>
+
+
+        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>groupSearchBase(String groupSearchBase)</a>        <ul class="params">
+        <li class="example"> Example: <pre>groupSearchBase('some value')</pre></li>
+        </ul>
+</div>
+
+
+        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>groupSearchFilter(String groupSearchFilter)</a>        <ul class="params">
+        <li class="example"> Example: <pre>groupSearchFilter('some value')</pre></li>
+        </ul>
+</div>
+
+
+        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>managerDN(String managerDN)</a>        <ul class="params">
+        <li class="example"> Example: <pre>managerDN('some value')</pre></li>
+        </ul>
+</div>
+
+
+        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>managerPasswordSecret(String managerPasswordSecret)</a>        <ul class="params">
+        <li class="example"> Example: <pre>managerPasswordSecret('some value')</pre></li>
+        </ul>
+</div>
+
+
+        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>rootDN(String rootDN)</a>        <ul class="params">
+        <li class="example"> Example: <pre>rootDN('some value')</pre></li>
+        </ul>
+</div>
+
+
+        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>server(String server)</a>        <ul class="params">
+        <li class="example"> Example: <pre>server('somehost.example.com')</pre></li>
+        </ul>
+</div>
+
+
+        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>userSearchBase(String userSearchBase)</a>        <ul class="params">
+        <li class="example"> Example: <pre>userSearchBase('some value')</pre></li>
+        </ul>
+</div>
+
+
+        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>userSearchFilter(String userSearchFilter)</a>        <ul class="params">
+        <li class="example"> Example: <pre>userSearchFilter('some value')</pre></li>
+        </ul>
+</div>
+
+
+    </div>
+
+
+</div>
+<div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>seedJobs</a>
+    <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>awsHelpers()</a>    <div class="plugin"> Requires Plugin: aws-java-sdk</div>
+</div>
+
+
+    <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>buildAfterCreation(boolean buildAfterCreation)</a>    <div class="helptext"> 
+        whether or not to build any generated jobs after creation
+    </div> 
+    <ul class="params">
+    <li class="example"> Example: <pre>buildAfterCreation(false)</pre></li>
+    </ul>
+</div>
+
+
+    <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>buildAfterCreation()</a>    <div class="helptext"> 
+        builds any generated jobs after creation (default: true)
+    </div> 
+</div>
+
+
+    <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>configXml(String jobName, String xml)</a>    <ul class="params">
+    <li class="example"> Example: <pre>configXml('some value', 'some value')</pre></li>
+    </ul>
+</div>
+
+
+    <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>jobDsl(String script)</a>    <ul class="params">
+    <li class="example"> Example: <pre>jobDsl('some value')</pre></li>
+    </ul>
+</div>
+
+
+</div>
+<div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>stashNotifier</a>
+    <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>awsHelpers()</a>    <div class="plugin"> Requires Plugin: aws-java-sdk</div>
+</div>
+
+
+    <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>considerUnstableAsSuccess()</a></div>
+
+
+    <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>credentialsId(String credentialsId)</a>    <ul class="params">
+    <li class="example"> Example: <pre>credentialsId('some value')</pre></li>
+    </ul>
+</div>
+
+
+    <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>disableInprogressNotification()</a></div>
+
+
+    <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>ignoreUnverifiedSsl()</a></div>
+
+
+    <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>includeBuildNumberInKey()</a></div>
+
+
+    <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>prependParentProjectKey()</a></div>
+
+
+    <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>stashRootUrl(String stashRootUrl)</a>    <ul class="params">
+    <li class="example"> Example: <pre>stashRootUrl('http://localhost/')</pre></li>
+    </ul>
+</div>
+
+
+</div>
+<div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>theme</a>
+    <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>awsHelpers()</a>    <div class="plugin"> Requires Plugin: aws-java-sdk</div>
+</div>
+
+
+    <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>cssUrl(String url)</a>    <ul class="params">
+    <li class="example"> Example: <pre>cssUrl('http://localhost/')</pre></li>
+    </ul>
+</div>
+
+
+    <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>faviconUrl(String url)</a>    <ul class="params">
+    <li class="example"> Example: <pre>faviconUrl('http://localhost/')</pre></li>
+    </ul>
+</div>
+
+
+    <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>jsUrl(String url)</a>    <ul class="params">
+    <li class="example"> Example: <pre>jsUrl('http://localhost/')</pre></li>
+    </ul>
+</div>
+
+
+</div>
+<div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>tools</a>
+    <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>awsHelpers()</a>    <div class="plugin"> Requires Plugin: aws-java-sdk</div>
+</div>
+
+
+    <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>gradle</a>    <div class="plugin"> Requires Plugin: gradle</div>
+
+        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>awsHelpers()</a>        <div class="plugin"> Requires Plugin: aws-java-sdk</div>
+</div>
+
+
+        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>batchCommand(String arg0, String arg1)</a>        <ul class="params">
+        <li class="example"> Example: <pre>batchCommand('some value', 'some value')</pre></li>
+        </ul>
+</div>
+
+
+        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>batchCommand(String command, String label, String homeDir)</a>        <ul class="params">
+        <li class="example"> Example: <pre>batchCommand('some value', 'some value', 'some value')</pre></li>
+        </ul>
+</div>
+
+
+        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>name(String name)</a>        <ul class="params">
+        <li class="example"> Example: <pre>name('some value')</pre></li>
+        </ul>
+</div>
+
+
+        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>shellCommand(String arg0, String arg1)</a>        <ul class="params">
+        <li class="example"> Example: <pre>shellCommand('some value', 'some value')</pre></li>
+        </ul>
+</div>
+
+
+        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>shellCommand(String command, String label, String homeDir)</a>        <ul class="params">
+        <li class="example"> Example: <pre>shellCommand('some value', 'some value', 'some value')</pre></li>
+        </ul>
+</div>
+
+
+        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>version(String version)</a>        <ul class="params">
+        <li class="example"> Example: <pre>version('some value')</pre></li>
+        </ul>
+</div>
+
+
+    </div>
+
+
+    <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>groovy</a>
+        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>awsHelpers()</a>        <div class="plugin"> Requires Plugin: aws-java-sdk</div>
+</div>
+
+
+        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>batchCommand(String arg0, String arg1)</a>        <ul class="params">
+        <li class="example"> Example: <pre>batchCommand('some value', 'some value')</pre></li>
+        </ul>
+</div>
+
+
+        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>batchCommand(String command, String label, String homeDir)</a>        <ul class="params">
+        <li class="example"> Example: <pre>batchCommand('some value', 'some value', 'some value')</pre></li>
+        </ul>
+</div>
+
+
+        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>name(String name)</a>        <ul class="params">
+        <li class="example"> Example: <pre>name('some value')</pre></li>
+        </ul>
+</div>
+
+
+        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>shellCommand(String arg0, String arg1)</a>        <ul class="params">
+        <li class="example"> Example: <pre>shellCommand('some value', 'some value')</pre></li>
+        </ul>
+</div>
+
+
+        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>shellCommand(String command, String label, String homeDir)</a>        <ul class="params">
+        <li class="example"> Example: <pre>shellCommand('some value', 'some value', 'some value')</pre></li>
+        </ul>
+</div>
+
+
+        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>version(String version)</a>        <ul class="params">
+        <li class="example"> Example: <pre>version('some value')</pre></li>
+        </ul>
+</div>
+
+
+    </div>
+
+
+    <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>jdk</a>
+        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>awsHelpers()</a>        <div class="plugin"> Requires Plugin: aws-java-sdk</div>
+</div>
+
+
+        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>batchCommand(String arg0, String arg1)</a>        <ul class="params">
+        <li class="example"> Example: <pre>batchCommand('some value', 'some value')</pre></li>
+        </ul>
+</div>
+
+
+        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>batchCommand(String command, String label, String homeDir)</a>        <ul class="params">
+        <li class="example"> Example: <pre>batchCommand('some value', 'some value', 'some value')</pre></li>
+        </ul>
+</div>
+
+
+        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>name(String name)</a>        <ul class="params">
+        <li class="example"> Example: <pre>name('some value')</pre></li>
+        </ul>
+</div>
+
+
+        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>oraclePassword(String oraclePassword)</a>        <ul class="params">
+        <li class="example"> Example: <pre>oraclePassword('some value')</pre></li>
+        </ul>
+</div>
+
+
+        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>oracleUsername(String username)</a>        <ul class="params">
+        <li class="example"> Example: <pre>oracleUsername('some value')</pre></li>
+        </ul>
+</div>
+
+
+        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>shellCommand(String arg0, String arg1)</a>        <ul class="params">
+        <li class="example"> Example: <pre>shellCommand('some value', 'some value')</pre></li>
+        </ul>
+</div>
+
+
+        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>shellCommand(String command, String label, String homeDir)</a>        <ul class="params">
+        <li class="example"> Example: <pre>shellCommand('some value', 'some value', 'some value')</pre></li>
+        </ul>
+</div>
+
+
+        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>version(String version)</a>        <ul class="params">
+        <li class="example"> Example: <pre>version('some value')</pre></li>
+        </ul>
+</div>
+
+
+    </div>
+
+
+    <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>maven</a>
+        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>awsHelpers()</a>        <div class="plugin"> Requires Plugin: aws-java-sdk</div>
+</div>
+
+
+        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>batchCommand(String arg0, String arg1)</a>        <ul class="params">
+        <li class="example"> Example: <pre>batchCommand('some value', 'some value')</pre></li>
+        </ul>
+</div>
+
+
+        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>batchCommand(String command, String label, String homeDir)</a>        <ul class="params">
+        <li class="example"> Example: <pre>batchCommand('some value', 'some value', 'some value')</pre></li>
+        </ul>
+</div>
+
+
+        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>name(String name)</a>        <ul class="params">
+        <li class="example"> Example: <pre>name('some value')</pre></li>
+        </ul>
+</div>
+
+
+        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>shellCommand(String arg0, String arg1)</a>        <ul class="params">
+        <li class="example"> Example: <pre>shellCommand('some value', 'some value')</pre></li>
+        </ul>
+</div>
+
+
+        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>shellCommand(String command, String label, String homeDir)</a>        <ul class="params">
+        <li class="example"> Example: <pre>shellCommand('some value', 'some value', 'some value')</pre></li>
+        </ul>
+</div>
+
+
+        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>version(String version)</a>        <ul class="params">
+        <li class="example"> Example: <pre>version('some value')</pre></li>
+        </ul>
+</div>
+
+
+    </div>
+
+
+    <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>nodeJs</a>    <div class="plugin"> Requires Plugin: nodejs</div>
+
+        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>awsHelpers()</a>        <div class="plugin"> Requires Plugin: aws-java-sdk</div>
+</div>
+
+
+        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>batchCommand(String arg0, String arg1)</a>        <ul class="params">
+        <li class="example"> Example: <pre>batchCommand('some value', 'some value')</pre></li>
+        </ul>
+</div>
+
+
+        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>batchCommand(String command, String label, String homeDir)</a>        <ul class="params">
+        <li class="example"> Example: <pre>batchCommand('some value', 'some value', 'some value')</pre></li>
+        </ul>
+</div>
+
+
+        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>globalNpmPackageRefreshHours(long globalNpmPackageRefreshHours)</a>        <ul class="params">
+        <li class="example"> Example: <pre>globalNpmPackageRefreshHours(8)</pre></li>
+        </ul>
+</div>
+
+
+        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>globalNpmPackages(List<String> arg0)</a>        <ul class="params">
+        <li class="example"> Example: <pre>globalNpmPackages(null)</pre></li>
+        </ul>
+</div>
+
+
+        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>name(String name)</a>        <ul class="params">
+        <li class="example"> Example: <pre>name('some value')</pre></li>
+        </ul>
+</div>
+
+
+        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>shellCommand(String arg0, String arg1)</a>        <ul class="params">
+        <li class="example"> Example: <pre>shellCommand('some value', 'some value')</pre></li>
+        </ul>
+</div>
+
+
+        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>shellCommand(String command, String label, String homeDir)</a>        <ul class="params">
+        <li class="example"> Example: <pre>shellCommand('some value', 'some value', 'some value')</pre></li>
+        </ul>
+</div>
+
+
+        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>version(String version)</a>        <ul class="params">
+        <li class="example"> Example: <pre>version('some value')</pre></li>
+        </ul>
+</div>
+
+
+    </div>
+
+
+</div>
+
+
+</body>
