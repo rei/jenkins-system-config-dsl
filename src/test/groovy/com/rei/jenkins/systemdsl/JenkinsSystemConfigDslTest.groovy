@@ -11,6 +11,7 @@ import org.jvnet.hudson.test.JenkinsRule
 import com.amazonaws.services.ec2.model.InstanceType
 
 class JenkinsSystemConfigDslTest {
+
     @Rule
     public JenkinsRule jenkins = new JenkinsRule()
 
@@ -19,7 +20,7 @@ class JenkinsSystemConfigDslTest {
         JenkinsSystemConfigDsl.configure(jenkins.jenkins) {
 
             global {
-                configUrl('https://git.rei.com/projects/ALP/repos/alpine-jenkins-docker/browse/init.groovy')
+                configUrl('https://example.com/init.groovy')
 
                 url('https://192.168.99.100:8080')
 
@@ -34,12 +35,12 @@ class JenkinsSystemConfigDslTest {
             }
 
             git {
-                author('Joe Blow', 'jblow@rei.com')
+                author('Joe Blow', 'jblow@example.com')
             }
 
             mailer {
                 smtpPort(22)
-                smtpServer('somehost.rei.com')
+                smtpServer('somehost.example.com')
             }
 
             extendedEmail {
@@ -52,7 +53,7 @@ class JenkinsSystemConfigDslTest {
             security {
                 ldap {
                     server('ldaps://ldaps.example.com:636')
-                    rootDN('OU=REI,DC=corp,DC=com')
+                    rootDN('OU=EX,DC=corp,DC=com')
                     userSearchBase('OU=Accounts')
                     userSearchFilter('sAMAccountName={0}')
                     groupSearchBase('OU=Groups')
@@ -60,7 +61,7 @@ class JenkinsSystemConfigDslTest {
                     groupMembershipStrategy {
                         groupSearch('(memberOf={0})')
                     }
-                    managerDN('CN=ldapauth,OU=Service,OU=Accounts,OU=REI,DC=corp,DC=com')
+                    managerDN('CN=ldapauth,OU=Service,OU=Accounts,OU=EX,DC=corp,DC=com')
                     managerPasswordSecret('t0ps3cret')
                     displayNameAttributeName('displayname')
                     emailAddressAttributeName('mail')
@@ -68,13 +69,15 @@ class JenkinsSystemConfigDslTest {
 
                 authorization {
                     projectMatrixAuthorization {
-                        addPermission('ADMINISTER', 'jskjons')
+                        addPermission('ADMINISTER', 'test-admin')
                     }
 //                    anyoneCanDoAnything()
                 }
 
                 disableRemoteCli()
                 disableJobDslScriptSecurity()
+                enableAgentToMasterAccessControl()
+                enableCsrfProtection()
             }
 
             credentials {
@@ -83,33 +86,9 @@ class JenkinsSystemConfigDslTest {
                     usernamePassword('stash-notifier', 'jenkins', 'password', 'Stash notifier plugin credentials')
 
                     ssh('git', 'git', '''-----BEGIN RSA PRIVATE KEY-----
-***REMOVED***
-***REMOVED***
-***REMOVED***
-***REMOVED***
-***REMOVED***
-***REMOVED***
-***REMOVED***
-***REMOVED***
-***REMOVED***
-***REMOVED***
-***REMOVED***
-***REMOVED***
-***REMOVED***
-***REMOVED***
-***REMOVED***
-***REMOVED***
-***REMOVED***
-***REMOVED***
-***REMOVED***
-***REMOVED***
-***REMOVED***
-***REMOVED***
-***REMOVED***
-***REMOVED***
-c0UPsQSZy49VbS1snbU5tbDaTAZEVjdKn6Hi+ni5WiUdgYvCSKKiUQ==
+BLAHBLAHBLAHBLAHBLAHBLAHFAKEFAKEFAKEFAKE==
 -----END RSA PRIVATE KEY-----
-''', 'Bitbucket jenkins user')
+''', 'Example jenkins user')
 
 
                 }
@@ -156,7 +135,7 @@ c0UPsQSZy49VbS1snbU5tbDaTAZEVjdKn6Hi+ni5WiUdgYvCSKKiUQ==
             }
 
             theme {
-                cssUrl('https://s3-us-west-2.amazonaws.com/jenkins-alpine/global.css')
+                cssUrl('https://example.com/global.css')
             }
 
             rebuild {
@@ -203,27 +182,7 @@ c0UPsQSZy49VbS1snbU5tbDaTAZEVjdKn6Hi+ni5WiUdgYvCSKKiUQ==
                     version('jdk-8u152-oth-JPR')
                     shellCommand('''
 JAVA_HOME=~/tools/hudson.model.JDK/JDK8/jre
-if ! keytool -list -alias REIIssuingCA01 -keystore ${JAVA_HOME}/lib/security/cacerts -noprompt -storepass changeit ; then
-  curl https://git.rei.com/projects/DKR/repos/jdk8-newrelic/browse/config/REIIssuingCA01.crt?raw -o /tmp/REIIssuingCA01.crt 
-  sudo keytool -importcert -file /tmp/REIIssuingCA01.crt -alias REIIssuingCA01 -keystore ${JAVA_HOME}/lib/security/cacerts -noprompt -storepass changeit
-fi
-if ! keytool -list -alias REIIssuingCA02 -keystore ${JAVA_HOME}/lib/security/cacerts -noprompt -storepass changeit ; then
-  curl https://git.rei.com/projects/DKR/repos/jdk8-newrelic/browse/config/REIIssuingCA02.crt?raw -o /tmp/REIIssuingCA02.crt
-  sudo keytool -importcert -file /tmp/REIIssuingCA02.crt -alias REIIssuingCA02 -keystore ${JAVA_HOME}/lib/security/cacerts -noprompt -storepass changeit
-fi
-if ! keytool -list -alias REI_ROOT_CA_sha2 -keystore ${JAVA_HOME}/lib/security/cacerts -noprompt -storepass changeit ; then
-  curl https://git.rei.com/projects/DKR/repos/jdk8-newrelic/browse/config/rei_root_b64.cer?raw -o /tmp/rei_root_b64.cer
-  sudo keytool -importcert -file /tmp/rei_root_b64.cer -alias REI_ROOT_CA_sha2 -keystore ${JAVA_HOME}/lib/security/cacerts -noprompt -storepass changeit
-fi
-if ! keytool -list -alias REI_issuing1_sha2 -keystore ${JAVA_HOME}/lib/security/cacerts -noprompt -storepass changeit ; then
-  curl https://git.rei.com/projects/DKR/repos/jdk8-newrelic/browse/config/rei_issuing1_b64.cer?raw -o /tmp/rei_issuing1_b64.cer
-  sudo keytool -importcert -file /tmp/rei_issuing1_b64.cer -alias REI_issuing1_sha2 -keystore ${JAVA_HOME}/lib/security/cacerts -noprompt -storepass changeit
-fi
-if ! keytool -list -alias REI_issuing2_sha2 -keystore ${JAVA_HOME}/lib/security/cacerts -noprompt -storepass changeit ; then
-  curl https://git.rei.com/projects/DKR/repos/jdk8-newrelic/browse/config/rei_issuing2_b64.cer?raw -o /tmp/rei_issuing2_b64.cer
-  sudo keytool -importcert -file /tmp/rei_issuing2_b64.cer -alias REI_issuing2_sha2 -keystore ${JAVA_HOME}/lib/security/cacerts -noprompt -storepass changeit
-fi
-rm -f /tmp/rei_*
+echo "Shell Stuff"
 '''.trim(), '')
                 }
 
@@ -239,9 +198,15 @@ rm -f /tmp/rei_*
                     version('2.14.1')
                 }
 
-                maven {
-                    name('Maven 3.3.3')
-                    version('3.3.3')
+                def mavenVersions = ["3.5.0",
+                                     "3.3.3",
+                                     "3.2.2"]
+
+                for (m in mavenVersions) {
+                    maven {
+                        name("Maven ${m}")
+                        version(m)
+                    }
                 }
 
                 nodeJs {
@@ -270,13 +235,20 @@ rm -f /tmp/rei_*
             }
         }
 
+        // also add this file to make sure we enable master-agent security
+        File secrets = new File("${jenkins.jenkins.root}/secrets/slave-to-master-security-kill-switch")
+        configFiles[secrets.name] = secrets.text
+
         String configXml = configFiles['config.xml']
         assertTrue(configXml.contains('<numExecutors>5</numExecutors>'))
         assertTrue(configXml.contains('<mode>NORMAL</mode>'))
         assertTrue(configXml.contains('<useSecurity>true</useSecurity>'))
-        assertTrue(configXml.contains('hudson.security.ProjectMatrixAuthorizationStrategy') && configXml.contains('hudson.model.Hudson.Administer:jskjons'))
+        assertTrue(configXml.contains('hudson.security.ProjectMatrixAuthorizationStrategy') && configXml.contains('hudson.model.Hudson.Administer:test-admin'))
         assertTrue(configXml.contains('hudson.security.LDAPSecurityRealm'))
-        assertTrue(configXml.contains('ldaps://ldaps.example.com:636') && configXml.contains('CN=ldapauth,OU=Service,OU=Accounts,OU=REI,DC=corp,DC=com'))
+        assertTrue(configXml.contains('hudson.security.csrf.DefaultCrumbIssuer'))
+        assertTrue(configXml.contains('<excludeClientIPFromCrumb>false</excludeClientIPFromCrumb>'))
+
+        assertTrue(configXml.contains('ldaps://ldaps.example.com:636') && configXml.contains('CN=ldapauth,OU=Service,OU=Accounts,OU=EX,DC=corp,DC=com'))
 
         assertTrue(configXml.contains('<name>JDK8</name>') && configXml.contains('<command>JAVA_HOME=~/tools/hudson.model.JDK/JDK8/jre'))
         assertTrue(configXml.contains('<name>JDK9</name>'))
@@ -290,15 +262,17 @@ rm -f /tmp/rei_*
 
         assertTrue(configFiles['envInject.xml'].contains('<name>KEY</name>'))
 
-        assertTrue(configFiles['hudson.plugins.emailext.ExtendedEmailPublisher.xml'].contains('<smtpHost>somehost.rei.com</smtpHost>'))
+        assertTrue(configFiles['hudson.plugins.emailext.ExtendedEmailPublisher.xml'].contains('<smtpHost>somehost.example.com</smtpHost>'))
 
         assertTrue(configFiles['hudson.plugins.git.GitSCM.xml'].contains('<globalConfigName>Joe Blow</globalConfigName>'))
 
         assertTrue(configFiles['hudson.plugins.gradle.Gradle.xml'].contains('<name>2.14.1</name>'))
         assertTrue(configFiles['hudson.plugins.groovy.Groovy.xml'].contains('<name>2.4.7</name>'))
 
-        assertTrue(configFiles['hudson.tasks.Mailer.xml'].contains('<smtpHost>somehost.rei.com</smtpHost>'))
+        assertTrue(configFiles['hudson.tasks.Mailer.xml'].contains('<smtpHost>somehost.example.com</smtpHost>'))
         assertTrue(configFiles['hudson.tasks.Maven.xml'].contains('<name>Maven 3.3.3</name>'))
+        assertTrue(configFiles['hudson.tasks.Maven.xml'].contains('<name>Maven 3.5.0</name>'))
+        assertTrue(configFiles['hudson.tasks.Maven.xml'].contains('<name>Maven 3.2.2</name>'))
 
         assertTrue(configFiles['hudson.tools.JDKInstaller.xml'].contains('<username>jblow</username>'))
         assertTrue(configFiles['javaposse.jobdsl.plugin.GlobalJobDslSecurityConfiguration.xml'].contains('<useScriptSecurity>false</useScriptSecurity>'))
@@ -308,7 +282,10 @@ rm -f /tmp/rei_*
 
         assertTrue(configFiles['jenkins.plugins.nodejs.tools.NodeJSInstallation.xml'].contains('<name>6.x</name>'))
 
-        assertTrue(configFiles['org.codefirst.SimpleThemeDecorator.xml'].contains('<cssUrl>https://s3-us-west-2.amazonaws.com/jenkins-alpine/global.css</cssUrl>'))
+        assertTrue(configFiles['org.codefirst.SimpleThemeDecorator.xml'].contains('<cssUrl>https://example.com/global.css</cssUrl>'))
         assertTrue(configFiles['org.jenkinsci.plugins.stashNotifier.StashNotifier.xml'].contains('<credentialsId>stash-notifier</credentialsId>'))
+
+        assertTrue(configFiles['slave-to-master-security-kill-switch'].contains('false'))
+
     }
 }

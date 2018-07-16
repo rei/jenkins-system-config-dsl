@@ -7,6 +7,8 @@ import hudson.security.Permission
 import hudson.security.ProjectMatrixAuthorizationStrategy
 import hudson.model.RootAction
 import hudson.security.LDAPSecurityRealm
+import hudson.security.csrf.CrumbIssuer
+import hudson.security.csrf.DefaultCrumbIssuer
 import hudson.util.Secret
 import javaposse.jobdsl.plugin.GlobalJobDslSecurityConfiguration
 import jenkins.AgentProtocol
@@ -16,6 +18,7 @@ import jenkins.security.plugins.ldap.FromGroupSearchLDAPGroupMembershipStrategy
 import jenkins.security.plugins.ldap.FromUserRecordLDAPGroupMembershipStrategy
 import jenkins.security.plugins.ldap.LDAPConfiguration
 import jenkins.security.plugins.ldap.LDAPGroupMembershipStrategy
+import jenkins.security.s2m.AdminWhitelistRule
 
 import com.rei.jenkins.systemdsl.doc.RequiresPlugin
 
@@ -34,6 +37,24 @@ class SecurityConfiguration extends DslSection {
     void disableRememberMe() {
         logger.info("disabling remember me")
         jenkins.setDisableRememberMe(true)
+    }
+
+    /**
+     * prevent cross site request forgery exploits.
+     * does not enable extra options for proxy compatibility at this time
+     */
+    void enableCsrfProtection() {
+        logger.info("enabling csrf protection")
+        jenkins.setCrumbIssuer(new DefaultCrumbIssuer(false))
+    }
+
+    /**
+     * enable agent to master access control
+     */
+    void enableAgentToMasterAccessControl() {
+        logger.info("enabling agent to master access control")
+        jenkins.getInjector().getInstance(AdminWhitelistRule.class)
+                .setMasterKillSwitch(false)
     }
 
     /**
