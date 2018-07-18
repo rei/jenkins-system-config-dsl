@@ -265,7 +265,7 @@ ADD --chown=1000:1000 "$nexus/releases/com/rei/jenkins/systemdsl/jenkins-system-
 
 
                 <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>scheduledUpdate(long interval, concurrent.TimeUnit unit)</a>                <ul class="params">
-                <li class="example"> Example: <pre>scheduledUpdate(3, TimeUnit.NANOSECONDS)</pre></li>
+                <li class="example"> Example: <pre>scheduledUpdate(7, TimeUnit.NANOSECONDS)</pre></li>
                 <ul class="valid-values"> Valid Values: <li>NANOSECONDS</li><li>MICROSECONDS</li><li>MILLISECONDS</li><li>SECONDS</li><li>MINUTES</li><li>HOURS</li><li>DAYS</li></ul>
                 </ul>
 </div>
@@ -336,7 +336,7 @@ ADD --chown=1000:1000 "$nexus/releases/com/rei/jenkins/systemdsl/jenkins-system-
 
 
             <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>instanceCap(int instanceCap)</a>            <ul class="params">
-            <li class="example"> Example: <pre>instanceCap(5)</pre></li>
+            <li class="example"> Example: <pre>instanceCap(9)</pre></li>
             </ul>
 </div>
 
@@ -367,7 +367,7 @@ ADD --chown=1000:1000 "$nexus/releases/com/rei/jenkins/systemdsl/jenkins-system-
 
 
             <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>launchTimeout(int timeout)</a>            <ul class="params">
-            <li class="example"> Example: <pre>launchTimeout(5)</pre></li>
+            <li class="example"> Example: <pre>launchTimeout(3)</pre></li>
             </ul>
 </div>
 
@@ -387,7 +387,7 @@ ADD --chown=1000:1000 "$nexus/releases/com/rei/jenkins/systemdsl/jenkins-system-
 
 
             <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>numExecutors(int numExecutors)</a>            <ul class="params">
-            <li class="example"> Example: <pre>numExecutors(3)</pre></li>
+            <li class="example"> Example: <pre>numExecutors(1)</pre></li>
             </ul>
 </div>
 
@@ -455,7 +455,7 @@ ADD --chown=1000:1000 "$nexus/releases/com/rei/jenkins/systemdsl/jenkins-system-
 
 
                 <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>sshPort(int sshPort)</a>                <ul class="params">
-                <li class="example"> Example: <pre>sshPort(6)</pre></li>
+                <li class="example"> Example: <pre>sshPort(2)</pre></li>
                 </ul>
 </div>
 
@@ -490,7 +490,7 @@ ADD --chown=1000:1000 "$nexus/releases/com/rei/jenkins/systemdsl/jenkins-system-
 
 
                 <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>bootDelay(int bootDelay)</a>                <ul class="params">
-                <li class="example"> Example: <pre>bootDelay(8)</pre></li>
+                <li class="example"> Example: <pre>bootDelay(4)</pre></li>
                 </ul>
 </div>
 
@@ -526,7 +526,7 @@ ADD --chown=1000:1000 "$nexus/releases/com/rei/jenkins/systemdsl/jenkins-system-
 
 
         <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>instanceCap(int cap)</a>        <ul class="params">
-        <li class="example"> Example: <pre>instanceCap(5)</pre></li>
+        <li class="example"> Example: <pre>instanceCap(4)</pre></li>
         </ul>
 </div>
 
@@ -569,14 +569,14 @@ ADD --chown=1000:1000 "$nexus/releases/com/rei/jenkins/systemdsl/jenkins-system-
 </div>
 
 
-        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>secretFile(String id, String pathOnMaster, String description)</a>        <ul class="params">
-        <li class="example"> Example: <pre>secretFile('some value', 'some value', 'some value')</pre></li>
+        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>secretFile(String id, String filename, String text, String description)</a>        <ul class="params">
+        <li class="example"> Example: <pre>secretFile('some value', 'some value', 'some value', 'some value')</pre></li>
         </ul>
 </div>
 
 
-        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>secretFile(String id, String filename, String text, String description)</a>        <ul class="params">
-        <li class="example"> Example: <pre>secretFile('some value', 'some value', 'some value', 'some value')</pre></li>
+        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>secretFile(String id, String pathOnMaster, String description)</a>        <ul class="params">
+        <li class="example"> Example: <pre>secretFile('some value', 'some value', 'some value')</pre></li>
         </ul>
 </div>
 
@@ -625,14 +625,14 @@ ADD --chown=1000:1000 "$nexus/releases/com/rei/jenkins/systemdsl/jenkins-system-
 </div>
 
 
-        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>secretFile(String id, String pathOnMaster, String description)</a>        <ul class="params">
-        <li class="example"> Example: <pre>secretFile('some value', 'some value', 'some value')</pre></li>
+        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>secretFile(String id, String filename, String text, String description)</a>        <ul class="params">
+        <li class="example"> Example: <pre>secretFile('some value', 'some value', 'some value', 'some value')</pre></li>
         </ul>
 </div>
 
 
-        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>secretFile(String id, String filename, String text, String description)</a>        <ul class="params">
-        <li class="example"> Example: <pre>secretFile('some value', 'some value', 'some value', 'some value')</pre></li>
+        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>secretFile(String id, String pathOnMaster, String description)</a>        <ul class="params">
+        <li class="example"> Example: <pre>secretFile('some value', 'some value', 'some value')</pre></li>
         </ul>
 </div>
 
@@ -667,6 +667,12 @@ ADD --chown=1000:1000 "$nexus/releases/com/rei/jenkins/systemdsl/jenkins-system-
 </div>
 <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>extendedEmail</a><div class="plugin"> Requires Plugin: email-ext</div>
 
+    <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>adminRequiredForTemplateTesting()</a>    <div class="helptext"> 
+        Email Template Testing link will only show up for users with Administrator privileges.
+    </div> 
+</div>
+
+
     <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>adminRequiredForTemplateTesting(boolean adminRequiredForTemplateTesting)</a>    <div class="helptext"> 
         When true Email Template Testing link will only show up for users with Administrator privileges.
     </div> 
@@ -676,17 +682,12 @@ ADD --chown=1000:1000 "$nexus/releases/com/rei/jenkins/systemdsl/jenkins-system-
 </div>
 
 
-    <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>adminRequiredForTemplateTesting()</a>    <div class="helptext"> 
-        Email Template Testing link will only show up for users with Administrator privileges.
-    </div> 
-</div>
-
-
-    <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>allowUnregistered(boolean enableAllowUnregistered)</a>    <div class="helptext"> 
-        When true allows emails to be sent to unregistered email addresses.
+    <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>allowUnregistered()</a>    <div class="helptext"> 
+        Allows emails to be sent to unregistered email addresses.
      Security risk, see https://issues.jenkins-ci.org/browse/JENKINS-9016 for more information
     </div> 
 </div>
+
 
     <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>allowUnregistered(boolean enableAllowUnregistered)</a>    <div class="helptext"> 
         When true allows emails to be sent to unregistered email addresses.
@@ -695,13 +696,6 @@ ADD --chown=1000:1000 "$nexus/releases/com/rei/jenkins/systemdsl/jenkins-system-
     <ul class="params">
     <li class="example"> Example: <pre>allowUnregistered(false)</pre></li>
     </ul>
-</div>
-
-
-    <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>allowUnregistered()</a>    <div class="helptext"> 
-        Allows emails to be sent to unregistered email addresses.
-     Security risk, see https://issues.jenkins-ci.org/browse/JENKINS-9016 for more information
-    </div> 
 </div>
 
 
@@ -828,20 +822,17 @@ ADD --chown=1000:1000 "$nexus/releases/com/rei/jenkins/systemdsl/jenkins-system-
 </div>
 
 
-    <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>enableWatching(boolean enableWatching)</a>    <div class="helptext"> 
+    <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>enableWatching()</a>    <div class="helptext"> 
         Enabling watching allows individual users to add their own triggers to jobs. The list of triggers they can add is
      restricted by the trigger implementer. For example, most script based triggers are not allowed for users to use as a watch.
      Users must have READ access to the job in order to watch it.
     
      Triggers are not stored in the job itself, but as a property on the user.
     </div> 
-    <ul class="params">
-    <li class="example"> Example: <pre>enableWatching(false)</pre></li>
-    </ul>
 </div>
 
 
-    <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>enableWatching()</a>    <div class="helptext"> 
+    <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>enableWatching(boolean enableWatching)</a>    <div class="helptext"> 
         Enabling watching allows individual users to add their own triggers to jobs. The list of triggers they can add is
      restricted by the trigger implementer. For example, most script based triggers are not allowed for users to use as a watch.
      Users must have READ access to the job in order to watch it.
@@ -886,7 +877,7 @@ ADD --chown=1000:1000 "$nexus/releases/com/rei/jenkins/systemdsl/jenkins-system-
         The maximum size (in MB) for all attachments. If left blank, there is no limit to the size of all attachments.
     </div> 
     <ul class="params">
-    <li class="example"> Example: <pre>maxAttachmentSize(8)</pre></li>
+    <li class="example"> Example: <pre>maxAttachmentSize(7)</pre></li>
     </ul>
 </div>
 
@@ -921,7 +912,7 @@ ADD --chown=1000:1000 "$nexus/releases/com/rei/jenkins/systemdsl/jenkins-system-
 
 
     <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>smtpPort(int smtpPort)</a>    <ul class="params">
-    <li class="example"> Example: <pre>smtpPort(9)</pre></li>
+    <li class="example"> Example: <pre>smtpPort(8)</pre></li>
     <li class="arg-help">Port number for the mail server. Leave it empty to use the default port for the protocol.</li>
     </ul>
 </div>
@@ -937,16 +928,16 @@ ADD --chown=1000:1000 "$nexus/releases/com/rei/jenkins/systemdsl/jenkins-system-
 </div>
 
 
-    <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>useSsl(boolean useSsl)</a>    <ul class="params">
-    <li class="example"> Example: <pre>useSsl(true)</pre></li>
-    <li class="arg-help">Whether or not to use SSL for connecting to the SMTP server. Defaults to port 465.       Other advanced configurations can be done by setting system properties.   See    this document for possible values and effects.</li>
-    </ul>
-</div>
-
-
     <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>useSsl()</a>    <div class="helptext"> 
         Whether or not to use SSL for connecting to the SMTP server. Defaults to port 465.       Other advanced configurations can be done by setting system properties.   See    this document for possible values and effects.
     </div> 
+</div>
+
+
+    <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>useSsl(boolean useSsl)</a>    <ul class="params">
+    <li class="example"> Example: <pre>useSsl(false)</pre></li>
+    <li class="arg-help">Whether or not to use SSL for connecting to the SMTP server. Defaults to port 465.       Other advanced configurations can be done by setting system properties.   See    this document for possible values and effects.</li>
+    </ul>
 </div>
 
 
@@ -1016,7 +1007,7 @@ ADD --chown=1000:1000 "$nexus/releases/com/rei/jenkins/systemdsl/jenkins-system-
         the amount of time to wait between scm commits to start a build
     </div> 
     <ul class="params">
-    <li class="example"> Example: <pre>quietPeriod(8)</pre></li>
+    <li class="example"> Example: <pre>quietPeriod(7)</pre></li>
     </ul>
 </div>
 
@@ -1025,7 +1016,7 @@ ADD --chown=1000:1000 "$nexus/releases/com/rei/jenkins/systemdsl/jenkins-system-
         sets the number of times to retry checking out source code
     </div> 
     <ul class="params">
-    <li class="example"> Example: <pre>scmCheckoutRetryCount(9)</pre></li>
+    <li class="example"> Example: <pre>scmCheckoutRetryCount(4)</pre></li>
     </ul>
 </div>
 
@@ -1087,7 +1078,7 @@ ADD --chown=1000:1000 "$nexus/releases/com/rei/jenkins/systemdsl/jenkins-system-
 
 
     <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>smtpPort(int smtpPort)</a>    <ul class="params">
-    <li class="example"> Example: <pre>smtpPort(8)</pre></li>
+    <li class="example"> Example: <pre>smtpPort(5)</pre></li>
     <li class="arg-help">Port number for the mail server. Leave it empty to use the default port for the protocol.</li>
     </ul>
 </div>
@@ -1104,7 +1095,7 @@ ADD --chown=1000:1000 "$nexus/releases/com/rei/jenkins/systemdsl/jenkins-system-
 
 
     <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>useSsl(boolean useSsl)</a>    <ul class="params">
-    <li class="example"> Example: <pre>useSsl(false)</pre></li>
+    <li class="example"> Example: <pre>useSsl(true)</pre></li>
     <li class="arg-help">Whether or not to use SSL for connecting to the SMTP server. Defaults to port 465.       Other advanced configurations can be done by setting system properties.   See    this document for possible values and effects.</li>
     </ul>
 </div>
@@ -1376,18 +1367,18 @@ ADD --chown=1000:1000 "$nexus/releases/com/rei/jenkins/systemdsl/jenkins-system-
 </div>
 
 
+    <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>buildAfterCreation()</a>    <div class="helptext"> 
+        builds any generated jobs after creation (default: true)
+    </div> 
+</div>
+
+
     <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>buildAfterCreation(boolean buildAfterCreation)</a>    <div class="helptext"> 
         whether or not to build any generated jobs after creation
     </div> 
     <ul class="params">
-    <li class="example"> Example: <pre>buildAfterCreation(false)</pre></li>
+    <li class="example"> Example: <pre>buildAfterCreation(true)</pre></li>
     </ul>
-</div>
-
-
-    <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>buildAfterCreation()</a>    <div class="helptext"> 
-        builds any generated jobs after creation (default: true)
-    </div> 
 </div>
 
 
@@ -1472,14 +1463,14 @@ ADD --chown=1000:1000 "$nexus/releases/com/rei/jenkins/systemdsl/jenkins-system-
 </div>
 
 
-        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>batchCommand(String arg0, String arg1)</a>        <ul class="params">
-        <li class="example"> Example: <pre>batchCommand('some value', 'some value')</pre></li>
+        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>batchCommand(String command, String label, String homeDir)</a>        <ul class="params">
+        <li class="example"> Example: <pre>batchCommand('some value', 'some value', 'some value')</pre></li>
         </ul>
 </div>
 
 
-        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>batchCommand(String command, String label, String homeDir)</a>        <ul class="params">
-        <li class="example"> Example: <pre>batchCommand('some value', 'some value', 'some value')</pre></li>
+        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>batchCommand(String arg0, String arg1)</a>        <ul class="params">
+        <li class="example"> Example: <pre>batchCommand('some value', 'some value')</pre></li>
         </ul>
 </div>
 
@@ -1490,14 +1481,14 @@ ADD --chown=1000:1000 "$nexus/releases/com/rei/jenkins/systemdsl/jenkins-system-
 </div>
 
 
-        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>shellCommand(String command, String label, String homeDir)</a>        <ul class="params">
-        <li class="example"> Example: <pre>shellCommand('some value', 'some value', 'some value')</pre></li>
+        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>shellCommand(String arg0, String arg1)</a>        <ul class="params">
+        <li class="example"> Example: <pre>shellCommand('some value', 'some value')</pre></li>
         </ul>
 </div>
 
 
-        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>shellCommand(String arg0, String arg1)</a>        <ul class="params">
-        <li class="example"> Example: <pre>shellCommand('some value', 'some value')</pre></li>
+        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>shellCommand(String command, String label, String homeDir)</a>        <ul class="params">
+        <li class="example"> Example: <pre>shellCommand('some value', 'some value', 'some value')</pre></li>
         </ul>
 </div>
 
@@ -1516,14 +1507,14 @@ ADD --chown=1000:1000 "$nexus/releases/com/rei/jenkins/systemdsl/jenkins-system-
 </div>
 
 
-        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>batchCommand(String arg0, String arg1)</a>        <ul class="params">
-        <li class="example"> Example: <pre>batchCommand('some value', 'some value')</pre></li>
+        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>batchCommand(String command, String label, String homeDir)</a>        <ul class="params">
+        <li class="example"> Example: <pre>batchCommand('some value', 'some value', 'some value')</pre></li>
         </ul>
 </div>
 
 
-        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>batchCommand(String command, String label, String homeDir)</a>        <ul class="params">
-        <li class="example"> Example: <pre>batchCommand('some value', 'some value', 'some value')</pre></li>
+        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>batchCommand(String arg0, String arg1)</a>        <ul class="params">
+        <li class="example"> Example: <pre>batchCommand('some value', 'some value')</pre></li>
         </ul>
 </div>
 
@@ -1534,14 +1525,14 @@ ADD --chown=1000:1000 "$nexus/releases/com/rei/jenkins/systemdsl/jenkins-system-
 </div>
 
 
-        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>shellCommand(String command, String label, String homeDir)</a>        <ul class="params">
-        <li class="example"> Example: <pre>shellCommand('some value', 'some value', 'some value')</pre></li>
+        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>shellCommand(String arg0, String arg1)</a>        <ul class="params">
+        <li class="example"> Example: <pre>shellCommand('some value', 'some value')</pre></li>
         </ul>
 </div>
 
 
-        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>shellCommand(String arg0, String arg1)</a>        <ul class="params">
-        <li class="example"> Example: <pre>shellCommand('some value', 'some value')</pre></li>
+        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>shellCommand(String command, String label, String homeDir)</a>        <ul class="params">
+        <li class="example"> Example: <pre>shellCommand('some value', 'some value', 'some value')</pre></li>
         </ul>
 </div>
 
@@ -1560,14 +1551,14 @@ ADD --chown=1000:1000 "$nexus/releases/com/rei/jenkins/systemdsl/jenkins-system-
 </div>
 
 
-        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>batchCommand(String arg0, String arg1)</a>        <ul class="params">
-        <li class="example"> Example: <pre>batchCommand('some value', 'some value')</pre></li>
+        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>batchCommand(String command, String label, String homeDir)</a>        <ul class="params">
+        <li class="example"> Example: <pre>batchCommand('some value', 'some value', 'some value')</pre></li>
         </ul>
 </div>
 
 
-        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>batchCommand(String command, String label, String homeDir)</a>        <ul class="params">
-        <li class="example"> Example: <pre>batchCommand('some value', 'some value', 'some value')</pre></li>
+        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>batchCommand(String arg0, String arg1)</a>        <ul class="params">
+        <li class="example"> Example: <pre>batchCommand('some value', 'some value')</pre></li>
         </ul>
 </div>
 
@@ -1590,14 +1581,14 @@ ADD --chown=1000:1000 "$nexus/releases/com/rei/jenkins/systemdsl/jenkins-system-
 </div>
 
 
-        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>shellCommand(String command, String label, String homeDir)</a>        <ul class="params">
-        <li class="example"> Example: <pre>shellCommand('some value', 'some value', 'some value')</pre></li>
+        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>shellCommand(String arg0, String arg1)</a>        <ul class="params">
+        <li class="example"> Example: <pre>shellCommand('some value', 'some value')</pre></li>
         </ul>
 </div>
 
 
-        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>shellCommand(String arg0, String arg1)</a>        <ul class="params">
-        <li class="example"> Example: <pre>shellCommand('some value', 'some value')</pre></li>
+        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>shellCommand(String command, String label, String homeDir)</a>        <ul class="params">
+        <li class="example"> Example: <pre>shellCommand('some value', 'some value', 'some value')</pre></li>
         </ul>
 </div>
 
@@ -1616,14 +1607,14 @@ ADD --chown=1000:1000 "$nexus/releases/com/rei/jenkins/systemdsl/jenkins-system-
 </div>
 
 
-        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>batchCommand(String arg0, String arg1)</a>        <ul class="params">
-        <li class="example"> Example: <pre>batchCommand('some value', 'some value')</pre></li>
+        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>batchCommand(String command, String label, String homeDir)</a>        <ul class="params">
+        <li class="example"> Example: <pre>batchCommand('some value', 'some value', 'some value')</pre></li>
         </ul>
 </div>
 
 
-        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>batchCommand(String command, String label, String homeDir)</a>        <ul class="params">
-        <li class="example"> Example: <pre>batchCommand('some value', 'some value', 'some value')</pre></li>
+        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>batchCommand(String arg0, String arg1)</a>        <ul class="params">
+        <li class="example"> Example: <pre>batchCommand('some value', 'some value')</pre></li>
         </ul>
 </div>
 
@@ -1634,14 +1625,14 @@ ADD --chown=1000:1000 "$nexus/releases/com/rei/jenkins/systemdsl/jenkins-system-
 </div>
 
 
-        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>shellCommand(String command, String label, String homeDir)</a>        <ul class="params">
-        <li class="example"> Example: <pre>shellCommand('some value', 'some value', 'some value')</pre></li>
+        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>shellCommand(String arg0, String arg1)</a>        <ul class="params">
+        <li class="example"> Example: <pre>shellCommand('some value', 'some value')</pre></li>
         </ul>
 </div>
 
 
-        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>shellCommand(String arg0, String arg1)</a>        <ul class="params">
-        <li class="example"> Example: <pre>shellCommand('some value', 'some value')</pre></li>
+        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>shellCommand(String command, String label, String homeDir)</a>        <ul class="params">
+        <li class="example"> Example: <pre>shellCommand('some value', 'some value', 'some value')</pre></li>
         </ul>
 </div>
 
@@ -1661,20 +1652,20 @@ ADD --chown=1000:1000 "$nexus/releases/com/rei/jenkins/systemdsl/jenkins-system-
 </div>
 
 
-        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>batchCommand(String arg0, String arg1)</a>        <ul class="params">
-        <li class="example"> Example: <pre>batchCommand('some value', 'some value')</pre></li>
-        </ul>
-</div>
-
-
         <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>batchCommand(String command, String label, String homeDir)</a>        <ul class="params">
         <li class="example"> Example: <pre>batchCommand('some value', 'some value', 'some value')</pre></li>
         </ul>
 </div>
 
 
+        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>batchCommand(String arg0, String arg1)</a>        <ul class="params">
+        <li class="example"> Example: <pre>batchCommand('some value', 'some value')</pre></li>
+        </ul>
+</div>
+
+
         <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>globalNpmPackageRefreshHours(long globalNpmPackageRefreshHours)</a>        <ul class="params">
-        <li class="example"> Example: <pre>globalNpmPackageRefreshHours(3)</pre></li>
+        <li class="example"> Example: <pre>globalNpmPackageRefreshHours(7)</pre></li>
         </ul>
 </div>
 
@@ -1691,14 +1682,14 @@ ADD --chown=1000:1000 "$nexus/releases/com/rei/jenkins/systemdsl/jenkins-system-
 </div>
 
 
-        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>shellCommand(String command, String label, String homeDir)</a>        <ul class="params">
-        <li class="example"> Example: <pre>shellCommand('some value', 'some value', 'some value')</pre></li>
+        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>shellCommand(String arg0, String arg1)</a>        <ul class="params">
+        <li class="example"> Example: <pre>shellCommand('some value', 'some value')</pre></li>
         </ul>
 </div>
 
 
-        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>shellCommand(String arg0, String arg1)</a>        <ul class="params">
-        <li class="example"> Example: <pre>shellCommand('some value', 'some value')</pre></li>
+        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>shellCommand(String command, String label, String homeDir)</a>        <ul class="params">
+        <li class="example"> Example: <pre>shellCommand('some value', 'some value', 'some value')</pre></li>
         </ul>
 </div>
 
