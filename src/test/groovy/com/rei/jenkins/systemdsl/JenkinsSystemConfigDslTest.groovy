@@ -187,6 +187,15 @@ echo "Shell Stuff"
                 }
 
                 jdk {
+                    name('JDK11')
+                    downloadArchive(
+                            'https://download.java.net/java/GA/jdk11/13/GPL/openjdk-11.0.1_linux-x64_bin.tar.gz',
+                            '',
+                            'jdk-11.0.1'
+                    )
+                }
+
+                jdk {
                     name('JDK9')
                     version('jdk-9.0.4-oth-JPR')
                     oracleUsername('jblow')
