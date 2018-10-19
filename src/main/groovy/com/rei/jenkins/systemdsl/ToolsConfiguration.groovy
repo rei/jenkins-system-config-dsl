@@ -1,25 +1,21 @@
 package com.rei.jenkins.systemdsl
 
 import java.lang.reflect.Array
-import java.util.function.Function
 
 import hudson.model.JDK
-import hudson.plugins.gradle.Gradle
 import hudson.plugins.gradle.GradleInstallation
 import hudson.plugins.gradle.GradleInstaller
-import hudson.plugins.groovy.Groovy
 import hudson.plugins.groovy.GroovyInstallation
 import hudson.plugins.groovy.GroovyInstaller
 import hudson.tasks.Maven
-import hudson.tools.AbstractCommandInstaller
 import hudson.tools.BatchCommandInstaller
 import hudson.tools.CommandInstaller
 import hudson.tools.InstallSourceProperty
 import hudson.tools.JDKInstaller
+import hudson.tools.ToolInstaller
+import hudson.tools.ZipExtractionInstaller
 import jenkins.plugins.nodejs.tools.NodeJSInstallation
 import jenkins.plugins.nodejs.tools.NodeJSInstaller
-
-import org.apache.commons.lang.SystemUtils
 
 import com.rei.jenkins.systemdsl.doc.RequiresPlugin
 
@@ -79,7 +75,8 @@ class ToolsConfiguration extends DslSection {
     private void installTools(List installs, Class installationType, Closure installerFactory) {
         if (!installs.isEmpty()) {
             def installations = installs.collect {
-                def installers = [installerFactory(it)]
+                def installers = []
+                if(it.version != null) installers.add(installerFactory(it))
                 installers.addAll(it.commands)
                 def installerProps = new InstallSourceProperty(installers)
                 installationType.newInstance(it.name, "", [installerProps])
@@ -94,7 +91,7 @@ class ToolsConfiguration extends DslSection {
     class ToolInstallConfiguration extends GlobalHelpers {
         protected String name
         protected String version
-        protected List<AbstractCommandInstaller> commands = []
+        protected List<ToolInstaller> commands = []
 
         void name(String name) {
             this.name = name
@@ -102,6 +99,10 @@ class ToolsConfiguration extends DslSection {
 
         void version(String version) {
             this.version = version
+        }
+
+        void downloadArchive(String url, String label, String subDir = '') {
+            commands << new ZipExtractionInstaller(label, url, subDir)
         }
 
         void shellCommand(String command, String label, String homeDir = '') {
