@@ -43,6 +43,8 @@ class CloudConfiguration extends DslSection {
         private String privateKey
         private int instanceCap
         private List<SlaveTemplate> slaveTemplates = []
+        private String roleArn
+        private String roleSessionName
 
         void region(String region) {
             this.region = region
@@ -54,6 +56,14 @@ class CloudConfiguration extends DslSection {
 
         void instanceCap(int cap) {
             this.instanceCap = cap
+        }
+
+        void roleArn(String roleArn) {
+            this.roleArn = roleArn
+        }
+
+        void roleSessionName(String roleSessionName) {
+            this.roleSessionName = roleSessionName
         }
 
         void credentials(@DelegatesTo(AwsCredentialsConfiguration) Closure config) {
@@ -218,14 +228,16 @@ class CloudConfiguration extends DslSection {
             class UnixTypeConfig extends GlobalHelpers {
                 private String rootCommandPrefix
                 private String slaveCommandPrefix
+                private String slaveCommandSuffix
                 private int sshPort
 
                 void rootCommandPrefix(String rootCommandPrefix) { this.rootCommandPrefix = rootCommandPrefix }
                 void slaveCommandPrefix(String slaveCommandPrefix) { this.slaveCommandPrefix = slaveCommandPrefix }
+                void slaveCommandSuffix(String slaveCommandSuffix)  {this.slaveCommandSuffix = slaveCommandSuffix}
                 void sshPort(int sshPort) { this.sshPort = sshPort }
 
                 UnixData getTypeData() {
-                    return new UnixData(rootCommandPrefix, slaveCommandPrefix, sshPort as String)
+                    return new UnixData(rootCommandPrefix, slaveCommandPrefix, slaveCommandSuffix, sshPort as String)
                 }
             }
 
@@ -242,7 +254,8 @@ class CloudConfiguration extends DslSection {
 
         AmazonEC2Cloud getCloud() {
             return new AmazonEC2Cloud(name, useInstanceProfileForCredentials,
-                                      credentialsId, region, privateKey, instanceCap as String, slaveTemplates)
+                                      credentialsId, region, privateKey, instanceCap as String, slaveTemplates,
+                                      roleArn, roleSessionName)
         }
     }
 
