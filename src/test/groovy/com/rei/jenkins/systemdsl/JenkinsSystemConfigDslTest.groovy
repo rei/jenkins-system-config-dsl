@@ -286,7 +286,6 @@ echo "Shell Stuff"
         assertTrue(configFiles['hudson.tools.JDKInstaller.xml'].contains('<username>jblow</username>'))
         assertTrue(configFiles['javaposse.jobdsl.plugin.GlobalJobDslSecurityConfiguration.xml'].contains('<useScriptSecurity>false</useScriptSecurity>'))
 
-        assertTrue(configFiles['jenkins.CLI.xml'].contains('<enabled>false</enabled>'))
         assertTrue(configFiles['jenkins.model.JenkinsLocationConfiguration.xml'].contains('<jenkinsUrl>https://192.168.99.100:8080/</jenkinsUrl>'))
 
         assertTrue(configFiles['jenkins.plugins.nodejs.tools.NodeJSInstallation.xml'].contains('<name>6.x</name>'))
