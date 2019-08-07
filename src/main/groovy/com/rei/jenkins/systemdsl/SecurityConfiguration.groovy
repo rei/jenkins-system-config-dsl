@@ -59,8 +59,15 @@ class SecurityConfiguration extends DslSection {
 
     /**
      * completely disables the Jenkins CLI
+     *
+     * Deprecated: Remote CLI is removed in Jenkins 2.176
      */
+    @Deprecated
     void disableRemoteCli() {
+        if(jenkins.getDescriptor("jenkins.CLI") == null) {
+            return
+        }
+
         // disable remoting cli
         jenkins.getDescriptor("jenkins.CLI").get().setEnabled(false)
         logger.info("disabling remoting cli")

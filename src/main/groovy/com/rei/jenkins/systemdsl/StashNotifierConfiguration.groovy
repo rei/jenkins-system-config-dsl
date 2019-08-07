@@ -1,7 +1,5 @@
 package com.rei.jenkins.systemdsl
 
-import net.sf.json.JSONObject
-
 import org.jenkinsci.plugins.stashNotifier.StashNotifier
 
 class StashNotifierConfiguration extends DslSection {
@@ -23,15 +21,14 @@ class StashNotifierConfiguration extends DslSection {
     void considerUnstableAsSuccess() { this.considerUnstableAsSuccess = true }
 
     void save() {
-        def data = JSONObject.fromObject([
-                stashRootUrl: stashRootUrl,
-                credentialsId: credentialsId,
-                ignoreUnverifiedSsl: ignoreUnverifiedSsl,
-                includeBuildNumberInKey: includeBuildNumberInKey,
-                prependParentProjectKey: prependParentProjectKey,
-                disableInprogressNotification: disableInprogressNotification,
-                considerUnstableAsSuccess: considerUnstableAsSuccess
-        ])
-        jenkins.getDescriptorByType(StashNotifier.DescriptorImpl).configure(null, data)
+        def config = jenkins.getDescriptorByType(StashNotifier.DescriptorImpl)
+        config.setStashRootUrl(stashRootUrl)
+        config.setCredentialsId(credentialsId)
+        config.setIgnoreUnverifiedSsl(ignoreUnverifiedSsl)
+        config.setIncludeBuildNumberInKey(includeBuildNumberInKey)
+        config.setPrependParentProjectKey(prependParentProjectKey)
+        config.setDisableInprogressNotification(disableInprogressNotification)
+        config.setConsiderUnstableAsSuccess(considerUnstableAsSuccess)
+        config.save()
     }
 }
