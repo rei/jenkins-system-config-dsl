@@ -47,7 +47,7 @@ class ApiDocGenerator {
 
         String outText
         if(isHtml) {
-            String template = getClass().getResourceAsStream('/doc-template.html').text
+            String template = (System.classLoader ?: Thread.currentThread().contextClassLoader).getResourceAsStream('doc-template.html').text
             StringBuilder sb = new StringBuilder()
             generator.roots.each { sb.append(it.toHtml()) }
             outText = template.replace('<!--GROOVY METHODS-->', sb.toString())

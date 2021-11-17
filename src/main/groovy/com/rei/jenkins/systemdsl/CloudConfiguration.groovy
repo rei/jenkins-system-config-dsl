@@ -10,8 +10,17 @@ import hudson.plugins.ec2.SlaveTemplate
 import hudson.plugins.ec2.SpotConfiguration
 import hudson.plugins.ec2.UnixData
 import hudson.plugins.ec2.WindowsData
+import jenkins.model.Jenkins
 
 import com.amazonaws.services.ec2.model.InstanceType
+import com.cloudbees.jenkins.plugins.sshcredentials.SSHUserPrivateKey
+import com.cloudbees.jenkins.plugins.sshcredentials.impl.BasicSSHUserPrivateKey
+import com.cloudbees.plugins.credentials.Credentials
+import com.cloudbees.plugins.credentials.CredentialsMatchers
+import com.cloudbees.plugins.credentials.CredentialsProvider
+import com.cloudbees.plugins.credentials.CredentialsScope
+import com.cloudbees.plugins.credentials.SystemCredentialsProvider
+import com.cloudbees.plugins.credentials.domains.Domain
 
 import com.rei.jenkins.systemdsl.aws.AmiQuery
 import com.rei.jenkins.systemdsl.aws.AmiQueryService
@@ -23,10 +32,11 @@ class CloudConfiguration extends DslSection {
     private def clouds = []
 
     void ec2(String name, @DelegatesTo(EC2Configuration) Closure config) {
-        config.delegate = new EC2Configuration(name: name)
+        def ec2Configuration = new EC2Configuration(name: name)
+        config.delegate = ec2Configuration
         config.resolveStrategy = Closure.DELEGATE_FIRST
         config.call()
-        clouds += config.delegate.cloud
+        clouds += ec2Configuration.getCloud()
     }
 
     void save() {
@@ -41,6 +51,8 @@ class CloudConfiguration extends DslSection {
         private String credentialsId
         private String region
         private String privateKey
+        private String privateKeyCredentialId = 'ec2'
+        private String sshUserName = 'ec2-user'
         private int instanceCap
         private List<SlaveTemplate> slaveTemplates = []
         private String roleArn
@@ -50,8 +62,17 @@ class CloudConfiguration extends DslSection {
             this.region = region
         }
 
-        void privateKey(String privateKey) {
+        void privateKey(String pk) {
+            privateKey(pk, 'ec2')
+        }
+
+        void privateKey(String privateKey, String credentialId) {
             this.privateKey = privateKey
+            this.privateKeyCredentialId = credentialId
+        }
+
+        void sshUserName(String userName) {
+            this.sshUserName = userName
         }
 
         void instanceCap(int cap) {
@@ -254,8 +275,25 @@ class CloudConfiguration extends DslSection {
 
         AmazonEC2Cloud getCloud() {
             return new AmazonEC2Cloud(name, useInstanceProfileForCredentials,
-                                      credentialsId, region, privateKey, instanceCap as String, slaveTemplates,
+                                      credentialsId, region, null /* deprecated private key */,
+                                      createSshKeysCredentials(privateKey),
+                                      instanceCap as String, slaveTemplates,
                                       roleArn, roleSessionName)
+        }
+
+        private String createSshKeysCredentials(String privateKey) {
+            def credentialStore = SystemCredentialsProvider.getInstance()
+            def credential = new BasicSSHUserPrivateKey(CredentialsScope.GLOBAL, privateKeyCredentialId, 'ec2-user',
+                    new BasicSSHUserPrivateKey.DirectEntryPrivateKeySource(privateKey), '', "EC2 Private Key for ${name}")
+
+
+            def existing = credentialStore.getCredentials(Domain.global()).find { it.descriptor.id == privateKeyCredentialId }
+            if (existing != null) {
+                credentialStore.updateCredentials(Domain.global(), existing, credential)
+            } else {
+                credentialStore.addCredentials(Domain.global(), credential)
+            }
+
         }
     }
 
