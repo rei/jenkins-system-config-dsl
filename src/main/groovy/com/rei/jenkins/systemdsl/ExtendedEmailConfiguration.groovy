@@ -2,6 +2,7 @@ package com.rei.jenkins.systemdsl
 
 import hudson.plugins.emailext.ExtendedEmailPublisherDescriptor
 import hudson.plugins.emailext.GroovyScriptPath
+import hudson.tasks.Mailer
 
 import com.rei.jenkins.systemdsl.doc.ExampleArgs
 import com.rei.jenkins.systemdsl.doc.JenkinsHelpTexts
@@ -16,7 +17,7 @@ class ExtendedEmailConfiguration extends DslSection {
     @JenkinsHelpTexts('hudson/tasks/Mailer/help-smtpServer.html')
     void smtpServer(String server) {
         logger.info("setting extended email SMTP server to $server")
-        descriptor.setSmtpHost(server)
+        descriptor.setSmtpServer(server)
     }
 
     /**
@@ -24,7 +25,7 @@ class ExtendedEmailConfiguration extends DslSection {
      */
     @ExampleArgs('jdoe@example.com')
     void replyToAddress(String replyTo) {
-        descriptor.setReplyToAddress(replyTo)
+        descriptor.setDefaultReplyTo(replyTo)
     }
 
     @ExampleArgs('@example.com')
@@ -70,7 +71,14 @@ class ExtendedEmailConfiguration extends DslSection {
      * copies the base settings (server connection information, reply to) from the base Jenkins Mailer plugin
      */
     void copySettingsFromMailer() {
-        descriptor.upgradeFromMailer()
+        def mailerInstance = jenkins.getDescriptorByType(Mailer.DescriptorImpl.class)
+        if (mailerInstance != null) {
+            smtpServer(mailerInstance.smtpHost)
+            smtpPort(mailerInstance.smtpPort as int)
+            defaultSuffix(mailerInstance.defaultSuffix)
+            useSsl(mailerInstance.useSsl)
+            replyToAddress(mailerInstance.replyToAddress)
+        }
     }
 
     /**
