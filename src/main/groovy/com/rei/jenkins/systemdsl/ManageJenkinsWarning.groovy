@@ -17,6 +17,14 @@ class ManageJenkinsWarning extends AdministrativeMonitor {
         return configUrl
     }
 
+    boolean hasError() {
+        JenkinsSystemConfigDsl.error != null
+    }
+
+    Throwable getError() {
+        return JenkinsSystemConfigDsl.error
+    }
+
     @Override
     boolean isActivated() {
         return true

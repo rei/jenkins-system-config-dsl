@@ -9,4 +9,13 @@
         Update the configuration here: <a href="${it.configUrl}">${it.configUrl}</a>
     </j:if>
   </div>
+  <j:if test="${it.hasError()}">
+    <div class="alert alert-danger">
+        <b>Error running System Config DSL script!</b>
+        <br/>
+        ${it.error.message}
+        <br/>
+        See logs for details.
+      </div>
+  </j:if>
 </j:jelly>
