@@ -1,5 +1,6 @@
 package com.rei.jenkins.systemdsl
 
+import java.util.logging.Level
 import java.util.logging.Logger
 
 import jenkins.model.Jenkins
@@ -7,16 +8,23 @@ import jenkins.model.Jenkins
 import com.rei.jenkins.systemdsl.doc.RequiresPlugin
 
 class JenkinsSystemConfigDsl extends GlobalHelpers {
+    static Throwable error
+
     static void configure(@DelegatesTo(JenkinsSystemConfigDsl) Closure config) {
         configure(Jenkins.instance, config)
     }
 
     static void configure(Jenkins jenkins, @DelegatesTo(JenkinsSystemConfigDsl) Closure config) {
         config.delegate = new JenkinsSystemConfigDsl(jenkins:jenkins)
-        config.call()
+        try {
+            config.call()
+        } catch (Throwable t) {
+            error = t
+            logger.log(Level.SEVERE, "error running System Config DSL script!", t)
+        }
     }
 
-    Logger logger = Logger.getLogger("system-dsl")
+    static Logger logger = Logger.getLogger("system-dsl")
 
     private Jenkins jenkins
 
