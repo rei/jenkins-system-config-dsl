@@ -5,9 +5,13 @@ import java.util.concurrent.TimeUnit
 import hudson.model.Node
 import hudson.plugins.ec2.AMITypeData
 import hudson.plugins.ec2.AmazonEC2Cloud
+import hudson.plugins.ec2.ConnectionStrategy
 import hudson.plugins.ec2.EC2Tag
+import hudson.plugins.ec2.EbsEncryptRootVolume
+import hudson.plugins.ec2.HostKeyVerificationStrategyEnum
 import hudson.plugins.ec2.SlaveTemplate
 import hudson.plugins.ec2.SpotConfiguration
+import hudson.plugins.ec2.Tenancy
 import hudson.plugins.ec2.UnixData
 import hudson.plugins.ec2.WindowsData
 import jenkins.model.Jenkins
@@ -113,7 +117,6 @@ class CloudConfiguration extends DslSection {
             private String ami
             private String description
             private String zone
-            private SpotConfiguration spotConfig
             private List<String> securityGroups
             private String remoteAdmin
             private String remoteFS
@@ -134,12 +137,13 @@ class CloudConfiguration extends DslSection {
             private String blockDeviceMapping
             private int instanceCap
             private boolean stopOnTerminate
-            private boolean usePrivateDnsName
-            private boolean associatePublicIp
-            private boolean useDedicatedTenancy
+            private ConnectionStrategy connectionStrategy
+            private Tenancy tenancy
             private int launchTimeout
             private boolean connectBySSHProcess
-            private boolean connectUsingPublicIp
+            private HostKeyVerificationStrategyEnum hostKeyVerificationStrategy = HostKeyVerificationStrategyEnum.OFF
+            private int minInstances = 0;
+            private int minSpareInstances = 0;
 
             private List<EC2Tag> tags = []
 
@@ -170,7 +174,6 @@ class CloudConfiguration extends DslSection {
 
             void description(String description) { this.description = description }
             void availabilityZone(String zone) { this.zone = zone }
-            void spotMaxBidPrice(String spotMaxBidPrice) { this.spotConfig = new SpotConfiguration(spotMaxBidPrice) }
             void securityGroups(List<String> securityGroups) { this.securityGroups = securityGroups }
             void remoteFSRoot(String remoteFS) { this.remoteFS = remoteFS }
             void remoteUser(String remoteAdmin) { this.remoteAdmin = remoteAdmin }
@@ -195,6 +198,8 @@ class CloudConfiguration extends DslSection {
             void jvmopts(String jvmopts) { this.jvmopts = jvmopts }
             void subnetId(String subnetId) { this.subnetId = subnetId }
             void idleTerminationMinutes(int idleTerminationMinutes) { this.idleTerminationMinutes = idleTerminationMinutes }
+            void minInstances(int minInstances) { this.minInstances = minInstances }
+            void minSpareInstances(int minSpareInstances) { this.minSpareInstances = minSpareInstances }
             void iamInstanceProfile(String iamInstanceProfile) { this.iamInstanceProfile = iamInstanceProfile }
             void deleteRootOnTermination() { this.deleteRootOnTermination = true }
             void useEphemeralDevices() { this.useEphemeralDevices = true }
@@ -202,11 +207,17 @@ class CloudConfiguration extends DslSection {
             void instanceCap(int instanceCap) { this.instanceCap = instanceCap }
             void launchTimeout(int timeout) { this.launchTimeout = timeout }
             void stopOnTerminate() { this.stopOnTerminate = true }
-            void usePrivateDnsName() { this.usePrivateDnsName = true }
-            void associatePublicIp() { this.associatePublicIp = true }
-            void useDedicatedTenancy() { this.useDedicatedTenancy = true }
+
             void connectBySSHProcess() { this.connectBySSHProcess = true }
-            void connectUsingPublicIp() { this.connectUsingPublicIp = true }
+            void connectionStrategy(ConnectionStrategy strategy) { this.connectionStrategy = strategy }
+
+            void tenancy(Tenancy tenancy) { this.tenancy = tenancy }
+
+            void hostKeyVerificationStrategy(String strategy) {
+                this.hostKeyVerificationStrategy = HostKeyVerificationStrategyEnum.values().find { it.equalsDisplayText(strategy) || it.name().equals(strategy)}
+            }
+
+            void hostKeyVerificationStrategy(HostKeyVerificationStrategyEnum strategy) { this.hostKeyVerificationStrategy = strategy }
 
             void tag(String name, String value) {
                 tags += new EC2Tag(name, value)
@@ -263,11 +274,12 @@ class CloudConfiguration extends DslSection {
             }
 
             SlaveTemplate getTemplate() {
-                return new SlaveTemplate(ami, zone, spotConfig, securityGroups.join(','), remoteFS, type, ebsOptimized,
+                return new SlaveTemplate(ami, zone, null, securityGroups.join(','), remoteFS, type, ebsOptimized,
                         labels.join(' '), mode, description, initScript, tmpDir, userData, numExecutors as String, remoteAdmin,
-                        amiType, jvmopts, stopOnTerminate, subnetId, tags, idleTerminationMinutes as String,  usePrivateDnsName,
-                        instanceCap as String, iamInstanceProfile, deleteRootOnTermination, useEphemeralDevices, useDedicatedTenancy,
-                        launchTimeout as String, associatePublicIp, blockDeviceMapping, connectBySSHProcess, connectUsingPublicIp)
+                        amiType, jvmopts, stopOnTerminate, subnetId, tags, idleTerminationMinutes as String,  minInstances, minSpareInstances,
+                        instanceCap as String, iamInstanceProfile, deleteRootOnTermination, useEphemeralDevices,
+                        launchTimeout as String, false, blockDeviceMapping, connectBySSHProcess, true, true, connectionStrategy,
+                        -1, null, hostKeyVerificationStrategy, tenancy, null, null, null, null)
             }
 
         }
@@ -282,7 +294,7 @@ class CloudConfiguration extends DslSection {
         }
 
         private String createSshKeysCredentials(String privateKey) {
-            def credentialStore = SystemCredentialsProvider.getInstance()
+            def credentialStore = new SystemCredentialsProvider.UserFacingAction().store
             def credential = new BasicSSHUserPrivateKey(CredentialsScope.GLOBAL, privateKeyCredentialId, 'ec2-user',
                     new BasicSSHUserPrivateKey.DirectEntryPrivateKeySource(privateKey), '', "EC2 Private Key for ${name}")
 
@@ -293,7 +305,7 @@ class CloudConfiguration extends DslSection {
             } else {
                 credentialStore.addCredentials(Domain.global(), credential)
             }
-
+            return credential.id
         }
     }
 
