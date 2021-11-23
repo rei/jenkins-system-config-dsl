@@ -144,6 +144,8 @@ class CloudConfiguration extends DslSection {
             private HostKeyVerificationStrategyEnum hostKeyVerificationStrategy = HostKeyVerificationStrategyEnum.OFF
             private int minInstances = 0;
             private int minSpareInstances = 0;
+            private boolean t2Unlimited = false
+            private boolean monitoring = false
 
             private List<EC2Tag> tags = []
 
@@ -207,6 +209,13 @@ class CloudConfiguration extends DslSection {
             void instanceCap(int instanceCap) { this.instanceCap = instanceCap }
             void launchTimeout(int timeout) { this.launchTimeout = timeout }
             void stopOnTerminate() { this.stopOnTerminate = true }
+
+            void enableT2Unlimited() {
+                this.t2Unlimited = true
+            }
+            void enableMonitoring() {
+                this.monitoring = true
+            }
 
             void connectBySSHProcess() { this.connectBySSHProcess = true }
             void connectionStrategy(ConnectionStrategy strategy) { this.connectionStrategy = strategy }
@@ -278,7 +287,8 @@ class CloudConfiguration extends DslSection {
                         labels.join(' '), mode, description, initScript, tmpDir, userData, numExecutors as String, remoteAdmin,
                         amiType, jvmopts, stopOnTerminate, subnetId, tags, idleTerminationMinutes as String,  minInstances, minSpareInstances,
                         instanceCap as String, iamInstanceProfile, deleteRootOnTermination, useEphemeralDevices,
-                        launchTimeout as String, false, blockDeviceMapping, connectBySSHProcess, true, true, connectionStrategy,
+                        launchTimeout as String, false, blockDeviceMapping, connectBySSHProcess, monitoring, t2Unlimited,
+                        connectionStrategy,
                         -1, null, hostKeyVerificationStrategy, tenancy, null, null, null, null)
             }
 
