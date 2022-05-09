@@ -277,7 +277,7 @@ class CloudConfiguration extends DslSection {
                 void slaveCommandPrefix(String slaveCommandPrefix) { this.slaveCommandPrefix = slaveCommandPrefix }
                 void slaveCommandSuffix(String slaveCommandSuffix)  {this.slaveCommandSuffix = slaveCommandSuffix}
                 void sshPort(int sshPort) { this.sshPort = sshPort }
-                void bootDelay(Sttring bootDelay) { this.bootDelay = bootDelay }
+                void bootDelay(String bootDelay) { this.bootDelay = bootDelay }
 
                 UnixData getTypeData() {
                     return new UnixData(rootCommandPrefix, slaveCommandPrefix, slaveCommandSuffix, sshPort as String, bootDelay)
