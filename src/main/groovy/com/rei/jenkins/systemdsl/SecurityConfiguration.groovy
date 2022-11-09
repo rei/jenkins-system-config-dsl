@@ -49,52 +49,6 @@ class SecurityConfiguration extends DslSection {
     }
 
     /**
-     * enable agent to master access control
-     */
-    void enableAgentToMasterAccessControl() {
-        logger.info("enabling agent to master access control")
-        jenkins.getInjector().getInstance(AdminWhitelistRule.class)
-                .setMasterKillSwitch(false)
-    }
-
-    /**
-     * completely disables the Jenkins CLI
-     *
-     * Deprecated: Remote CLI is removed in Jenkins 2.176
-     */
-    @Deprecated
-    void disableRemoteCli() {
-        if(jenkins.getDescriptor("jenkins.CLI") == null) {
-            return
-        }
-
-        // disable remoting cli
-        jenkins.getDescriptor("jenkins.CLI").get().setEnabled(false)
-        logger.info("disabling remoting cli")
-
-        // disabled CLI access over TCP listener (separate port)
-        def p = AgentProtocol.all()
-        p.each { x ->
-            if (x.name && x.name.contains("CLI")) {
-                p.remove(x)
-            }
-        }
-
-        // disable CLI access over /cli URL
-        def removal = { lst ->
-            lst.each { x ->
-                if (x.getClass().name.contains("CLIAction")) {
-                    lst.remove(x)
-                }
-            }
-        }
-
-        logger.info("Removing the Jenkins CLI subsystem")
-        removal(jenkins.getExtensionList(RootAction.class))
-        removal(jenkins.actions)
-    }
-
-    /**
      * disables the script security mechanism in the Job DSL Plugin
      *
      * Not recommended if this Jenkins instance allows untrusted users to create Job DSL jobs
