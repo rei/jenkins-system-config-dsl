@@ -1,0 +1,4 @@
+<?jelly escape-by-default='true'?>
+<div>
+     A plugin to configure the Jenkins system configuration via a Groovy based DSL
+</div>

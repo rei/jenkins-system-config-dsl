@@ -1,8 +1,11 @@
 package com.rei.jenkins.systemdsl
 
-import net.sf.json.JSONObject
 
+import org.apache.commons.lang.StringUtils
 import org.codefirst.SimpleThemeDecorator
+import org.jenkinsci.plugins.simpletheme.CssUrlThemeElement
+import org.jenkinsci.plugins.simpletheme.FaviconUrlThemeElement
+import org.jenkinsci.plugins.simpletheme.JsUrlThemeElement
 
 class ThemeConfiguration extends DslSection {
     private String css
@@ -23,9 +26,15 @@ class ThemeConfiguration extends DslSection {
 
     void save() {
         def decorator = jenkins.getExtensionList(SimpleThemeDecorator)[0]
-        decorator.cssUrl = css
-        decorator.jsUrl = js
-        decorator.faviconUrl = favicon
+        if (StringUtils.isNotBlank(css)) {
+            decorator.elements.add(new CssUrlThemeElement(css));
+        }
+        if (StringUtils.isNotBlank(js)) {
+            decorator.elements.add(new JsUrlThemeElement(js));
+        }
+        if (StringUtils.isNotBlank(favicon)) {
+            decorator.elements.add(new FaviconUrlThemeElement(favicon));
+        }
         decorator.save()
     }
 }

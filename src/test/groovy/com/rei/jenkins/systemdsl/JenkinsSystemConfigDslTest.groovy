@@ -74,9 +74,7 @@ class JenkinsSystemConfigDslTest {
 //                    anyoneCanDoAnything()
                 }
 
-                disableRemoteCli()
                 disableJobDslScriptSecurity()
-                enableAgentToMasterAccessControl()
                 enableCsrfProtection()
             }
 
@@ -244,11 +242,8 @@ echo "Shell Stuff"
             }
         }
 
-        // also add this file to make sure we enable master-agent security
-        File secrets = new File("${jenkins.jenkins.root}/secrets/slave-to-master-security-kill-switch")
-        configFiles[secrets.name] = secrets.text
-
         String configXml = configFiles['config.xml']
+
         assertTrue(configXml.contains('<numExecutors>5</numExecutors>'))
         assertTrue(configXml.contains('<mode>NORMAL</mode>'))
         assertTrue(configXml.contains('<useSecurity>true</useSecurity>'))
@@ -290,10 +285,8 @@ echo "Shell Stuff"
 
         assertTrue(configFiles['jenkins.plugins.nodejs.tools.NodeJSInstallation.xml'].contains('<name>6.x</name>'))
 
-        assertTrue(configFiles['org.codefirst.SimpleThemeDecorator.xml'].contains('<cssUrl>https://example.com/global.css</cssUrl>'))
+
+        assertTrue(configFiles['org.codefirst.SimpleThemeDecorator.xml'].contains('<url>https://example.com/global.css</url>'))
         assertTrue(configFiles['org.jenkinsci.plugins.stashNotifier.StashNotifier.xml'].contains('<credentialsId>stash-notifier</credentialsId>'))
-
-        assertTrue(configFiles['slave-to-master-security-kill-switch'].contains('false'))
-
     }
 }

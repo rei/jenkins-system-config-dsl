@@ -278,7 +278,7 @@ class CloudConfiguration extends DslSection {
                 void sshPort(int sshPort) { this.sshPort = sshPort }
 
                 UnixData getTypeData() {
-                    return new UnixData(rootCommandPrefix, slaveCommandPrefix, slaveCommandSuffix, sshPort as String)
+                    return new UnixData(rootCommandPrefix, slaveCommandPrefix, slaveCommandSuffix, sshPort as String, null)
                 }
             }
 
@@ -289,7 +289,7 @@ class CloudConfiguration extends DslSection {
                         instanceCap as String, iamInstanceProfile, deleteRootOnTermination, useEphemeralDevices,
                         launchTimeout as String, false, blockDeviceMapping, connectBySSHProcess, monitoring, t2Unlimited,
                         connectionStrategy,
-                        -1, null, hostKeyVerificationStrategy, tenancy, null, null, null, null)
+                        -1, null, hostKeyVerificationStrategy, tenancy, null)
             }
 
         }
