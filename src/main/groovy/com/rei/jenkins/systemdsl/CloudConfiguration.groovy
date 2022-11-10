@@ -271,25 +271,27 @@ class CloudConfiguration extends DslSection {
                 private String slaveCommandPrefix
                 private String slaveCommandSuffix
                 private int sshPort
+                private String bootDelay
 
                 void rootCommandPrefix(String rootCommandPrefix) { this.rootCommandPrefix = rootCommandPrefix }
                 void slaveCommandPrefix(String slaveCommandPrefix) { this.slaveCommandPrefix = slaveCommandPrefix }
                 void slaveCommandSuffix(String slaveCommandSuffix)  {this.slaveCommandSuffix = slaveCommandSuffix}
                 void sshPort(int sshPort) { this.sshPort = sshPort }
+                void bootDelay(String bootDelay) { this.bootDelay = bootDelay }
 
                 UnixData getTypeData() {
-                    return new UnixData(rootCommandPrefix, slaveCommandPrefix, slaveCommandSuffix, sshPort as String, null)
+                    return new UnixData(rootCommandPrefix, slaveCommandPrefix, slaveCommandSuffix, sshPort as String, bootDelay)
                 }
             }
 
             SlaveTemplate getTemplate() {
                 return new SlaveTemplate(ami, zone, null, securityGroups.join(','), remoteFS, type, ebsOptimized,
                         labels.join(' '), mode, description, initScript, tmpDir, userData, numExecutors as String, remoteAdmin,
-                        amiType, jvmopts, stopOnTerminate, subnetId, tags, idleTerminationMinutes as String,  minInstances, minSpareInstances,
+                        amiType, null, jvmopts, stopOnTerminate, subnetId, tags, idleTerminationMinutes as String,  minInstances, minSpareInstances,
                         instanceCap as String, iamInstanceProfile, deleteRootOnTermination, useEphemeralDevices,
                         launchTimeout as String, false, blockDeviceMapping, connectBySSHProcess, monitoring, t2Unlimited,
                         connectionStrategy,
-                        -1, null, hostKeyVerificationStrategy, tenancy, null)
+                        -1, null, hostKeyVerificationStrategy, tenancy, null, null, null, null)
             }
 
         }
