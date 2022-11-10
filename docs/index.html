@@ -265,7 +265,7 @@ ADD --chown=1000:1000 "$nexus/releases/com/rei/jenkins/systemdsl/jenkins-system-
 
 
                 <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>scheduledUpdate(long interval, concurrent.TimeUnit unit)</a>                <ul class="params">
-                <li class="example"> Example: <pre>scheduledUpdate(6, TimeUnit.NANOSECONDS)</pre></li>
+                <li class="example"> Example: <pre>scheduledUpdate(9, TimeUnit.NANOSECONDS)</pre></li>
                 <ul class="valid-values"> Valid Values: <li>NANOSECONDS</li><li>MICROSECONDS</li><li>MILLISECONDS</li><li>SECONDS</li><li>MINUTES</li><li>HOURS</li><li>DAYS</li></ul>
                 </ul>
 </div>
@@ -318,15 +318,21 @@ ADD --chown=1000:1000 "$nexus/releases/com/rei/jenkins/systemdsl/jenkins-system-
             <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>ebsOptimized()</a></div>
 
 
-            <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>hostKeyVerificationStrategy(String strategy)</a>            <ul class="params">
-            <li class="example"> Example: <pre>hostKeyVerificationStrategy('some value')</pre></li>
-            </ul>
-</div>
+            <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>enableMonitoring()</a></div>
+
+
+            <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>enableT2Unlimited()</a></div>
 
 
             <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>hostKeyVerificationStrategy(hudson.plugins.ec2.HostKeyVerificationStrategyEnum strategy)</a>            <ul class="params">
             <li class="example"> Example: <pre>hostKeyVerificationStrategy(HostKeyVerificationStrategyEnum.CHECK_NEW_HARD)</pre></li>
             <ul class="valid-values"> Valid Values: <li>CHECK_NEW_HARD</li><li>CHECK_NEW_SOFT</li><li>ACCEPT_NEW</li><li>OFF</li></ul>
+            </ul>
+</div>
+
+
+            <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>hostKeyVerificationStrategy(String strategy)</a>            <ul class="params">
+            <li class="example"> Example: <pre>hostKeyVerificationStrategy('some value')</pre></li>
             </ul>
 </div>
 
@@ -338,7 +344,7 @@ ADD --chown=1000:1000 "$nexus/releases/com/rei/jenkins/systemdsl/jenkins-system-
 
 
             <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>idleTerminationMinutes(int idleTerminationMinutes)</a>            <ul class="params">
-            <li class="example"> Example: <pre>idleTerminationMinutes(4)</pre></li>
+            <li class="example"> Example: <pre>idleTerminationMinutes(8)</pre></li>
             </ul>
 </div>
 
@@ -350,13 +356,7 @@ ADD --chown=1000:1000 "$nexus/releases/com/rei/jenkins/systemdsl/jenkins-system-
 
 
             <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>instanceCap(int instanceCap)</a>            <ul class="params">
-            <li class="example"> Example: <pre>instanceCap(6)</pre></li>
-            </ul>
-</div>
-
-
-            <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>instanceType(String type)</a>            <ul class="params">
-            <li class="example"> Example: <pre>instanceType('some value')</pre></li>
+            <li class="example"> Example: <pre>instanceCap(8)</pre></li>
             </ul>
 </div>
 
@@ -364,6 +364,12 @@ ADD --chown=1000:1000 "$nexus/releases/com/rei/jenkins/systemdsl/jenkins-system-
             <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>instanceType(com.amazonaws.services.ec2.model.InstanceType type)</a>            <ul class="params">
             <li class="example"> Example: <pre>instanceType(InstanceType.t1.micro)</pre></li>
             <ul class="valid-values"> Valid Values: <li>t1.micro</li><li>t2.nano</li><li>t2.micro</li><li>t2.small</li><li>t2.medium</li><li>t2.large</li><li>t2.xlarge</li><li>t2.2xlarge</li><li>t3.nano</li><li>t3.micro</li><li>t3.small</li><li>t3.medium</li><li>t3.large</li><li>t3.xlarge</li><li>t3.2xlarge</li><li>t3a.nano</li><li>t3a.micro</li><li>t3a.small</li><li>t3a.medium</li><li>t3a.large</li><li>t3a.xlarge</li><li>t3a.2xlarge</li><li>t4g.nano</li><li>t4g.micro</li><li>t4g.small</li><li>t4g.medium</li><li>t4g.large</li><li>t4g.xlarge</li><li>t4g.2xlarge</li><li>m1.small</li><li>m1.medium</li><li>m1.large</li><li>m1.xlarge</li><li>m3.medium</li><li>m3.large</li><li>m3.xlarge</li><li>m3.2xlarge</li><li>m4.large</li><li>m4.xlarge</li><li>m4.2xlarge</li><li>m4.4xlarge</li><li>m4.10xlarge</li><li>m4.16xlarge</li><li>m2.xlarge</li><li>m2.2xlarge</li><li>m2.4xlarge</li><li>cr1.8xlarge</li><li>r3.large</li><li>r3.xlarge</li><li>r3.2xlarge</li><li>r3.4xlarge</li><li>r3.8xlarge</li><li>r4.large</li><li>r4.xlarge</li><li>r4.2xlarge</li><li>r4.4xlarge</li><li>r4.8xlarge</li><li>r4.16xlarge</li><li>r5.large</li><li>r5.xlarge</li><li>r5.2xlarge</li><li>r5.4xlarge</li><li>r5.8xlarge</li><li>r5.12xlarge</li><li>r5.16xlarge</li><li>r5.24xlarge</li><li>r5.metal</li><li>r5a.large</li><li>r5a.xlarge</li><li>r5a.2xlarge</li><li>r5a.4xlarge</li><li>r5a.8xlarge</li><li>r5a.12xlarge</li><li>r5a.16xlarge</li><li>r5a.24xlarge</li><li>r5b.large</li><li>r5b.xlarge</li><li>r5b.2xlarge</li><li>r5b.4xlarge</li><li>r5b.8xlarge</li><li>r5b.12xlarge</li><li>r5b.16xlarge</li><li>r5b.24xlarge</li><li>r5b.metal</li><li>r5d.large</li><li>r5d.xlarge</li><li>r5d.2xlarge</li><li>r5d.4xlarge</li><li>r5d.8xlarge</li><li>r5d.12xlarge</li><li>r5d.16xlarge</li><li>r5d.24xlarge</li><li>r5d.metal</li><li>r5ad.large</li><li>r5ad.xlarge</li><li>r5ad.2xlarge</li><li>r5ad.4xlarge</li><li>r5ad.8xlarge</li><li>r5ad.12xlarge</li><li>r5ad.16xlarge</li><li>r5ad.24xlarge</li><li>r6g.metal</li><li>r6g.medium</li><li>r6g.large</li><li>r6g.xlarge</li><li>r6g.2xlarge</li><li>r6g.4xlarge</li><li>r6g.8xlarge</li><li>r6g.12xlarge</li><li>r6g.16xlarge</li><li>r6gd.metal</li><li>r6gd.medium</li><li>r6gd.large</li><li>r6gd.xlarge</li><li>r6gd.2xlarge</li><li>r6gd.4xlarge</li><li>r6gd.8xlarge</li><li>r6gd.12xlarge</li><li>r6gd.16xlarge</li><li>x1.16xlarge</li><li>x1.32xlarge</li><li>x1e.xlarge</li><li>x1e.2xlarge</li><li>x1e.4xlarge</li><li>x1e.8xlarge</li><li>x1e.16xlarge</li><li>x1e.32xlarge</li><li>i2.xlarge</li><li>i2.2xlarge</li><li>i2.4xlarge</li><li>i2.8xlarge</li><li>i3.large</li><li>i3.xlarge</li><li>i3.2xlarge</li><li>i3.4xlarge</li><li>i3.8xlarge</li><li>i3.16xlarge</li><li>i3.metal</li><li>i3en.large</li><li>i3en.xlarge</li><li>i3en.2xlarge</li><li>i3en.3xlarge</li><li>i3en.6xlarge</li><li>i3en.12xlarge</li><li>i3en.24xlarge</li><li>i3en.metal</li><li>hi1.4xlarge</li><li>hs1.8xlarge</li><li>c1.medium</li><li>c1.xlarge</li><li>c3.large</li><li>c3.xlarge</li><li>c3.2xlarge</li><li>c3.4xlarge</li><li>c3.8xlarge</li><li>c4.large</li><li>c4.xlarge</li><li>c4.2xlarge</li><li>c4.4xlarge</li><li>c4.8xlarge</li><li>c5.large</li><li>c5.xlarge</li><li>c5.2xlarge</li><li>c5.4xlarge</li><li>c5.9xlarge</li><li>c5.12xlarge</li><li>c5.18xlarge</li><li>c5.24xlarge</li><li>c5.metal</li><li>c5a.large</li><li>c5a.xlarge</li><li>c5a.2xlarge</li><li>c5a.4xlarge</li><li>c5a.8xlarge</li><li>c5a.12xlarge</li><li>c5a.16xlarge</li><li>c5a.24xlarge</li><li>c5ad.large</li><li>c5ad.xlarge</li><li>c5ad.2xlarge</li><li>c5ad.4xlarge</li><li>c5ad.8xlarge</li><li>c5ad.12xlarge</li><li>c5ad.16xlarge</li><li>c5ad.24xlarge</li><li>c5d.large</li><li>c5d.xlarge</li><li>c5d.2xlarge</li><li>c5d.4xlarge</li><li>c5d.9xlarge</li><li>c5d.12xlarge</li><li>c5d.18xlarge</li><li>c5d.24xlarge</li><li>c5d.metal</li><li>c5n.large</li><li>c5n.xlarge</li><li>c5n.2xlarge</li><li>c5n.4xlarge</li><li>c5n.9xlarge</li><li>c5n.18xlarge</li><li>c5n.metal</li><li>c6g.metal</li><li>c6g.medium</li><li>c6g.large</li><li>c6g.xlarge</li><li>c6g.2xlarge</li><li>c6g.4xlarge</li><li>c6g.8xlarge</li><li>c6g.12xlarge</li><li>c6g.16xlarge</li><li>c6gd.metal</li><li>c6gd.medium</li><li>c6gd.large</li><li>c6gd.xlarge</li><li>c6gd.2xlarge</li><li>c6gd.4xlarge</li><li>c6gd.8xlarge</li><li>c6gd.12xlarge</li><li>c6gd.16xlarge</li><li>c6gn.medium</li><li>c6gn.large</li><li>c6gn.xlarge</li><li>c6gn.2xlarge</li><li>c6gn.4xlarge</li><li>c6gn.8xlarge</li><li>c6gn.12xlarge</li><li>c6gn.16xlarge</li><li>cc1.4xlarge</li><li>cc2.8xlarge</li><li>g2.2xlarge</li><li>g2.8xlarge</li><li>g3.4xlarge</li><li>g3.8xlarge</li><li>g3.16xlarge</li><li>g3s.xlarge</li><li>g4ad.xlarge</li><li>g4ad.2xlarge</li><li>g4ad.4xlarge</li><li>g4ad.8xlarge</li><li>g4ad.16xlarge</li><li>g4dn.xlarge</li><li>g4dn.2xlarge</li><li>g4dn.4xlarge</li><li>g4dn.8xlarge</li><li>g4dn.12xlarge</li><li>g4dn.16xlarge</li><li>g4dn.metal</li><li>cg1.4xlarge</li><li>p2.xlarge</li><li>p2.8xlarge</li><li>p2.16xlarge</li><li>p3.2xlarge</li><li>p3.8xlarge</li><li>p3.16xlarge</li><li>p3dn.24xlarge</li><li>p4d.24xlarge</li><li>d2.xlarge</li><li>d2.2xlarge</li><li>d2.4xlarge</li><li>d2.8xlarge</li><li>d3.xlarge</li><li>d3.2xlarge</li><li>d3.4xlarge</li><li>d3.8xlarge</li><li>d3en.xlarge</li><li>d3en.2xlarge</li><li>d3en.4xlarge</li><li>d3en.6xlarge</li><li>d3en.8xlarge</li><li>d3en.12xlarge</li><li>f1.2xlarge</li><li>f1.4xlarge</li><li>f1.16xlarge</li><li>m5.large</li><li>m5.xlarge</li><li>m5.2xlarge</li><li>m5.4xlarge</li><li>m5.8xlarge</li><li>m5.12xlarge</li><li>m5.16xlarge</li><li>m5.24xlarge</li><li>m5.metal</li><li>m5a.large</li><li>m5a.xlarge</li><li>m5a.2xlarge</li><li>m5a.4xlarge</li><li>m5a.8xlarge</li><li>m5a.12xlarge</li><li>m5a.16xlarge</li><li>m5a.24xlarge</li><li>m5d.large</li><li>m5d.xlarge</li><li>m5d.2xlarge</li><li>m5d.4xlarge</li><li>m5d.8xlarge</li><li>m5d.12xlarge</li><li>m5d.16xlarge</li><li>m5d.24xlarge</li><li>m5d.metal</li><li>m5ad.large</li><li>m5ad.xlarge</li><li>m5ad.2xlarge</li><li>m5ad.4xlarge</li><li>m5ad.8xlarge</li><li>m5ad.12xlarge</li><li>m5ad.16xlarge</li><li>m5ad.24xlarge</li><li>m5zn.large</li><li>m5zn.xlarge</li><li>m5zn.2xlarge</li><li>m5zn.3xlarge</li><li>m5zn.6xlarge</li><li>m5zn.12xlarge</li><li>m5zn.metal</li><li>h1.2xlarge</li><li>h1.4xlarge</li><li>h1.8xlarge</li><li>h1.16xlarge</li><li>z1d.large</li><li>z1d.xlarge</li><li>z1d.2xlarge</li><li>z1d.3xlarge</li><li>z1d.6xlarge</li><li>z1d.12xlarge</li><li>z1d.metal</li><li>u-6tb1.56xlarge</li><li>u-6tb1.112xlarge</li><li>u-9tb1.112xlarge</li><li>u-12tb1.112xlarge</li><li>u-6tb1.metal</li><li>u-9tb1.metal</li><li>u-12tb1.metal</li><li>u-18tb1.metal</li><li>u-24tb1.metal</li><li>a1.medium</li><li>a1.large</li><li>a1.xlarge</li><li>a1.2xlarge</li><li>a1.4xlarge</li><li>a1.metal</li><li>m5dn.large</li><li>m5dn.xlarge</li><li>m5dn.2xlarge</li><li>m5dn.4xlarge</li><li>m5dn.8xlarge</li><li>m5dn.12xlarge</li><li>m5dn.16xlarge</li><li>m5dn.24xlarge</li><li>m5dn.metal</li><li>m5n.large</li><li>m5n.xlarge</li><li>m5n.2xlarge</li><li>m5n.4xlarge</li><li>m5n.8xlarge</li><li>m5n.12xlarge</li><li>m5n.16xlarge</li><li>m5n.24xlarge</li><li>m5n.metal</li><li>r5dn.large</li><li>r5dn.xlarge</li><li>r5dn.2xlarge</li><li>r5dn.4xlarge</li><li>r5dn.8xlarge</li><li>r5dn.12xlarge</li><li>r5dn.16xlarge</li><li>r5dn.24xlarge</li><li>r5dn.metal</li><li>r5n.large</li><li>r5n.xlarge</li><li>r5n.2xlarge</li><li>r5n.4xlarge</li><li>r5n.8xlarge</li><li>r5n.12xlarge</li><li>r5n.16xlarge</li><li>r5n.24xlarge</li><li>r5n.metal</li><li>inf1.xlarge</li><li>inf1.2xlarge</li><li>inf1.6xlarge</li><li>inf1.24xlarge</li><li>m6g.metal</li><li>m6g.medium</li><li>m6g.large</li><li>m6g.xlarge</li><li>m6g.2xlarge</li><li>m6g.4xlarge</li><li>m6g.8xlarge</li><li>m6g.12xlarge</li><li>m6g.16xlarge</li><li>m6gd.metal</li><li>m6gd.medium</li><li>m6gd.large</li><li>m6gd.xlarge</li><li>m6gd.2xlarge</li><li>m6gd.4xlarge</li><li>m6gd.8xlarge</li><li>m6gd.12xlarge</li><li>m6gd.16xlarge</li><li>m6i.large</li><li>m6i.xlarge</li><li>m6i.2xlarge</li><li>m6i.4xlarge</li><li>m6i.8xlarge</li><li>m6i.12xlarge</li><li>m6i.16xlarge</li><li>m6i.24xlarge</li><li>m6i.32xlarge</li><li>mac1.metal</li><li>x2gd.medium</li><li>x2gd.large</li><li>x2gd.xlarge</li><li>x2gd.2xlarge</li><li>x2gd.4xlarge</li><li>x2gd.8xlarge</li><li>x2gd.12xlarge</li><li>x2gd.16xlarge</li><li>x2gd.metal</li><li>vt1.3xlarge</li><li>vt1.6xlarge</li><li>vt1.24xlarge</li></ul>
+            </ul>
+</div>
+
+
+            <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>instanceType(String type)</a>            <ul class="params">
+            <li class="example"> Example: <pre>instanceType('some value')</pre></li>
             </ul>
 </div>
 
@@ -381,26 +387,19 @@ ADD --chown=1000:1000 "$nexus/releases/com/rei/jenkins/systemdsl/jenkins-system-
 
 
             <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>launchTimeout(int timeout)</a>            <ul class="params">
-            <li class="example"> Example: <pre>launchTimeout(8)</pre></li>
+            <li class="example"> Example: <pre>launchTimeout(1)</pre></li>
             </ul>
 </div>
 
 
             <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>minInstances(int minInstances)</a>            <ul class="params">
-            <li class="example"> Example: <pre>minInstances(5)</pre></li>
+            <li class="example"> Example: <pre>minInstances(8)</pre></li>
             </ul>
 </div>
 
 
             <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>minSpareInstances(int minSpareInstances)</a>            <ul class="params">
-            <li class="example"> Example: <pre>minSpareInstances(1)</pre></li>
-            </ul>
-</div>
-
-
-            <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>mode(hudson.model.Node.Mode arg0)</a>            <ul class="params">
-            <li class="example"> Example: <pre>mode(Mode.NORMAL)</pre></li>
-            <ul class="valid-values"> Valid Values: <li>NORMAL</li><li>EXCLUSIVE</li></ul>
+            <li class="example"> Example: <pre>minSpareInstances(4)</pre></li>
             </ul>
 </div>
 
@@ -412,8 +411,15 @@ ADD --chown=1000:1000 "$nexus/releases/com/rei/jenkins/systemdsl/jenkins-system-
 </div>
 
 
+            <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>mode(hudson.model.Node.Mode arg0)</a>            <ul class="params">
+            <li class="example"> Example: <pre>mode(Mode.NORMAL)</pre></li>
+            <ul class="valid-values"> Valid Values: <li>NORMAL</li><li>EXCLUSIVE</li></ul>
+            </ul>
+</div>
+
+
             <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>numExecutors(int numExecutors)</a>            <ul class="params">
-            <li class="example"> Example: <pre>numExecutors(3)</pre></li>
+            <li class="example"> Example: <pre>numExecutors(5)</pre></li>
             </ul>
 </div>
 
@@ -469,6 +475,12 @@ ADD --chown=1000:1000 "$nexus/releases/com/rei/jenkins/systemdsl/jenkins-system-
 </div>
 
 
+                <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>bootDelay(String bootDelay)</a>                <ul class="params">
+                <li class="example"> Example: <pre>bootDelay('some value')</pre></li>
+                </ul>
+</div>
+
+
                 <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>rootCommandPrefix(String rootCommandPrefix)</a>                <ul class="params">
                 <li class="example"> Example: <pre>rootCommandPrefix('some value')</pre></li>
                 </ul>
@@ -488,7 +500,7 @@ ADD --chown=1000:1000 "$nexus/releases/com/rei/jenkins/systemdsl/jenkins-system-
 
 
                 <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>sshPort(int sshPort)</a>                <ul class="params">
-                <li class="example"> Example: <pre>sshPort(5)</pre></li>
+                <li class="example"> Example: <pre>sshPort(8)</pre></li>
                 </ul>
 </div>
 
@@ -517,7 +529,7 @@ ADD --chown=1000:1000 "$nexus/releases/com/rei/jenkins/systemdsl/jenkins-system-
 
 
                 <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>bootDelay(int bootDelay)</a>                <ul class="params">
-                <li class="example"> Example: <pre>bootDelay(7)</pre></li>
+                <li class="example"> Example: <pre>bootDelay(8)</pre></li>
                 </ul>
 </div>
 
@@ -553,19 +565,19 @@ ADD --chown=1000:1000 "$nexus/releases/com/rei/jenkins/systemdsl/jenkins-system-
 
 
         <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>instanceCap(int cap)</a>        <ul class="params">
-        <li class="example"> Example: <pre>instanceCap(3)</pre></li>
-        </ul>
-</div>
-
-
-        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>privateKey(String pk)</a>        <ul class="params">
-        <li class="example"> Example: <pre>privateKey('some value')</pre></li>
+        <li class="example"> Example: <pre>instanceCap(1)</pre></li>
         </ul>
 </div>
 
 
         <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>privateKey(String privateKey, String credentialId)</a>        <ul class="params">
         <li class="example"> Example: <pre>privateKey('some value', 'some value')</pre></li>
+        </ul>
+</div>
+
+
+        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>privateKey(String pk)</a>        <ul class="params">
+        <li class="example"> Example: <pre>privateKey('some value')</pre></li>
         </ul>
 </div>
 
@@ -620,14 +632,14 @@ ADD --chown=1000:1000 "$nexus/releases/com/rei/jenkins/systemdsl/jenkins-system-
 </div>
 
 
-        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>secretFile(String id, String filename, String text, String description)</a>        <ul class="params">
-        <li class="example"> Example: <pre>secretFile('some value', 'some value', 'some value', 'some value')</pre></li>
+        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>secretFile(String id, String pathOnMaster, String description)</a>        <ul class="params">
+        <li class="example"> Example: <pre>secretFile('some value', 'some value', 'some value')</pre></li>
         </ul>
 </div>
 
 
-        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>secretFile(String id, String pathOnMaster, String description)</a>        <ul class="params">
-        <li class="example"> Example: <pre>secretFile('some value', 'some value', 'some value')</pre></li>
+        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>secretFile(String id, String filename, String text, String description)</a>        <ul class="params">
+        <li class="example"> Example: <pre>secretFile('some value', 'some value', 'some value', 'some value')</pre></li>
         </ul>
 </div>
 
@@ -676,14 +688,14 @@ ADD --chown=1000:1000 "$nexus/releases/com/rei/jenkins/systemdsl/jenkins-system-
 </div>
 
 
-        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>secretFile(String id, String filename, String text, String description)</a>        <ul class="params">
-        <li class="example"> Example: <pre>secretFile('some value', 'some value', 'some value', 'some value')</pre></li>
+        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>secretFile(String id, String pathOnMaster, String description)</a>        <ul class="params">
+        <li class="example"> Example: <pre>secretFile('some value', 'some value', 'some value')</pre></li>
         </ul>
 </div>
 
 
-        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>secretFile(String id, String pathOnMaster, String description)</a>        <ul class="params">
-        <li class="example"> Example: <pre>secretFile('some value', 'some value', 'some value')</pre></li>
+        <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>secretFile(String id, String filename, String text, String description)</a>        <ul class="params">
+        <li class="example"> Example: <pre>secretFile('some value', 'some value', 'some value', 'some value')</pre></li>
         </ul>
 </div>
 
@@ -718,18 +730,18 @@ ADD --chown=1000:1000 "$nexus/releases/com/rei/jenkins/systemdsl/jenkins-system-
 </div>
 <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>extendedEmail</a><div class="plugin"> Requires Plugin: email-ext</div>
 
+    <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>adminRequiredForTemplateTesting()</a>    <div class="helptext"> 
+        Email Template Testing link will only show up for users with Administrator privileges.
+    </div> 
+</div>
+
+
     <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>adminRequiredForTemplateTesting(boolean adminRequiredForTemplateTesting)</a>    <div class="helptext"> 
         When true Email Template Testing link will only show up for users with Administrator privileges.
     </div> 
     <ul class="params">
     <li class="example"> Example: <pre>adminRequiredForTemplateTesting(false)</pre></li>
     </ul>
-</div>
-
-
-    <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>adminRequiredForTemplateTesting()</a>    <div class="helptext"> 
-        Email Template Testing link will only show up for users with Administrator privileges.
-    </div> 
 </div>
 
 
@@ -928,7 +940,7 @@ ADD --chown=1000:1000 "$nexus/releases/com/rei/jenkins/systemdsl/jenkins-system-
         The maximum size (in MB) for all attachments. If left blank, there is no limit to the size of all attachments.
     </div> 
     <ul class="params">
-    <li class="example"> Example: <pre>maxAttachmentSize(4)</pre></li>
+    <li class="example"> Example: <pre>maxAttachmentSize(5)</pre></li>
     </ul>
 </div>
 
@@ -938,7 +950,7 @@ ADD --chown=1000:1000 "$nexus/releases/com/rei/jenkins/systemdsl/jenkins-system-
      (out-of-office, on-vacation, etc.)
     </div> 
     <ul class="params">
-    <li class="example"> Example: <pre>precedenceBulk(false)</pre></li>
+    <li class="example"> Example: <pre>precedenceBulk(true)</pre></li>
     </ul>
 </div>
 
@@ -963,7 +975,7 @@ ADD --chown=1000:1000 "$nexus/releases/com/rei/jenkins/systemdsl/jenkins-system-
 
 
     <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>smtpPort(int smtpPort)</a>    <ul class="params">
-    <li class="example"> Example: <pre>smtpPort(8)</pre></li>
+    <li class="example"> Example: <pre>smtpPort(7)</pre></li>
     <li class="arg-help">Port number for the mail server. Leave it empty to use the default port for the protocol.</li>
     </ul>
 </div>
@@ -1058,7 +1070,7 @@ ADD --chown=1000:1000 "$nexus/releases/com/rei/jenkins/systemdsl/jenkins-system-
         the amount of time to wait between scm commits to start a build
     </div> 
     <ul class="params">
-    <li class="example"> Example: <pre>quietPeriod(9)</pre></li>
+    <li class="example"> Example: <pre>quietPeriod(2)</pre></li>
     </ul>
 </div>
 
@@ -1067,7 +1079,7 @@ ADD --chown=1000:1000 "$nexus/releases/com/rei/jenkins/systemdsl/jenkins-system-
         sets the number of times to retry checking out source code
     </div> 
     <ul class="params">
-    <li class="example"> Example: <pre>scmCheckoutRetryCount(3)</pre></li>
+    <li class="example"> Example: <pre>scmCheckoutRetryCount(5)</pre></li>
     </ul>
 </div>
 
@@ -1129,7 +1141,7 @@ ADD --chown=1000:1000 "$nexus/releases/com/rei/jenkins/systemdsl/jenkins-system-
 
 
     <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>smtpPort(int smtpPort)</a>    <ul class="params">
-    <li class="example"> Example: <pre>smtpPort(5)</pre></li>
+    <li class="example"> Example: <pre>smtpPort(2)</pre></li>
     <li class="arg-help">Port number for the mail server. Leave it empty to use the default port for the protocol.</li>
     </ul>
 </div>
@@ -1146,7 +1158,7 @@ ADD --chown=1000:1000 "$nexus/releases/com/rei/jenkins/systemdsl/jenkins-system-
 
 
     <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>useSsl(boolean useSsl)</a>    <ul class="params">
-    <li class="example"> Example: <pre>useSsl(false)</pre></li>
+    <li class="example"> Example: <pre>useSsl(true)</pre></li>
     <li class="arg-help">Whether or not to use SSL for connecting to the SMTP server. Defaults to port 465.       Other advanced configurations can be done by setting system properties.   See    this document for possible values and effects.</li>
     </ul>
 </div>
@@ -1191,7 +1203,7 @@ ADD --chown=1000:1000 "$nexus/releases/com/rei/jenkins/systemdsl/jenkins-system-
         the number of executors on the Jenkins master node
     </div> 
     <ul class="params">
-    <li class="example"> Example: <pre>numExecutors(1)</pre></li>
+    <li class="example"> Example: <pre>numExecutors(9)</pre></li>
     </ul>
 </div>
 
@@ -1203,7 +1215,7 @@ ADD --chown=1000:1000 "$nexus/releases/com/rei/jenkins/systemdsl/jenkins-system-
 
 
     <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>rememberPasswords(boolean remember)</a>    <ul class="params">
-    <li class="example"> Example: <pre>rememberPasswords(false)</pre></li>
+    <li class="example"> Example: <pre>rememberPasswords(true)</pre></li>
     </ul>
 </div>
 
@@ -1326,7 +1338,7 @@ ADD --chown=1000:1000 "$nexus/releases/com/rei/jenkins/systemdsl/jenkins-system-
     <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>ldap</a>    <div class="plugin"> Requires Plugin: ldap</div>
 
         <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>allowBlankRootDN(boolean allowBlankRootDN)</a>        <ul class="params">
-        <li class="example"> Example: <pre>allowBlankRootDN(true)</pre></li>
+        <li class="example"> Example: <pre>allowBlankRootDN(false)</pre></li>
         </ul>
 </div>
 
@@ -1420,18 +1432,18 @@ ADD --chown=1000:1000 "$nexus/releases/com/rei/jenkins/systemdsl/jenkins-system-
 </div>
 
 
+    <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>buildAfterCreation()</a>    <div class="helptext"> 
+        builds any generated jobs after creation (default: true)
+    </div> 
+</div>
+
+
     <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>buildAfterCreation(boolean buildAfterCreation)</a>    <div class="helptext"> 
         whether or not to build any generated jobs after creation
     </div> 
     <ul class="params">
-    <li class="example"> Example: <pre>buildAfterCreation(false)</pre></li>
+    <li class="example"> Example: <pre>buildAfterCreation(true)</pre></li>
     </ul>
-</div>
-
-
-    <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>buildAfterCreation()</a>    <div class="helptext"> 
-        builds any generated jobs after creation (default: true)
-    </div> 
 </div>
 
 
@@ -1778,7 +1790,7 @@ ADD --chown=1000:1000 "$nexus/releases/com/rei/jenkins/systemdsl/jenkins-system-
 
 
         <div class="method" ><a class="signature" onclick="javascript: this.classList.toggle('hide');"><span class="arrow"> </span>globalNpmPackageRefreshHours(long globalNpmPackageRefreshHours)</a>        <ul class="params">
-        <li class="example"> Example: <pre>globalNpmPackageRefreshHours(6)</pre></li>
+        <li class="example"> Example: <pre>globalNpmPackageRefreshHours(9)</pre></li>
         </ul>
 </div>
 
