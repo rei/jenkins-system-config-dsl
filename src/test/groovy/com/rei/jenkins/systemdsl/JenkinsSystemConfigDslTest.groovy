@@ -88,8 +88,15 @@ BLAHBLAHBLAHBLAHBLAHBLAHFAKEFAKEFAKEFAKE==
 -----END RSA PRIVATE KEY-----
 ''', 'Example jenkins user')
 
+                    gitlabApiToken('gitlab', 'password', 'Gitlab API token')
 
                 }
+            }
+
+            gitlab {
+                apiTokenId("gitlab")
+                name("Gitlab")
+                hostUrl("https://gitlab.com")
             }
 
             clouds {
@@ -263,6 +270,7 @@ echo "Shell Stuff"
 
         assertTrue(configFiles['credentials.xml'].contains('<id>slack-notifier</id>'))
         assertTrue(configFiles['credentials.xml'].contains('<id>stash-notifier</id>'))
+        assertTrue(configFiles['credentials.xml'].contains('<id>gitlab</id>'))
 
         assertTrue(configFiles['envInject.xml'].contains('<name>KEY</name>'))
 
