@@ -51,6 +51,11 @@ class JenkinsSystemConfigDsl extends GlobalHelpers {
         configureSection(ExtendedEmailConfiguration, config)
     }
 
+    @RequiresPlugin('gitlab-plugin')
+    void gitlab(@DelegatesTo(GitlabConfiguration) Closure config) {
+        configureSection(GitlabConfiguration, config);
+    }
+
     void security(@DelegatesTo(SecurityConfiguration) Closure config) {
         configureSection(SecurityConfiguration, config)
     }
