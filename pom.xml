@@ -13,8 +13,8 @@
 
     <properties>
         <revision>99999-SNAPSHOT</revision>
-        <jenkins.version>2.361.3</jenkins.version>
-        <java.level>8</java.level>
+        <jenkins.version>2.361.4</jenkins.version>
+        <java.level>11</java.level>
         <!--<findbugs.failOnError>false</findbugs.failOnError>-->
         <aws-java-sdk.version>1.12.287-357.vf82d85a_6eefd</aws-java-sdk.version>
         <spotbugs.skip>true</spotbugs.skip>
@@ -48,7 +48,7 @@
         <dependency>
             <groupId>org.jenkins-ci.plugins</groupId>
             <artifactId>plain-credentials</artifactId>
-            <version>139.ved2b_9cf7587b</version>
+            <version>143.v1b_df8b_d3b_e48</version>
             <optional>true</optional>
         </dependency>
         <dependency>
@@ -89,7 +89,7 @@
         <dependency>
             <groupId>org.jenkins-ci.plugins</groupId>
             <artifactId>mailer</artifactId>
-            <version>438.v02c7f0a_12fa_4</version>
+            <version>448.v5b_97805e3767</version>
             <optional>true</optional>
         </dependency>
         <dependency>
@@ -101,13 +101,19 @@
         <dependency>
             <groupId>org.jenkins-ci.plugins</groupId>
             <artifactId>git</artifactId>
-            <version>4.13.0</version>
+            <version>5.0.0</version>
             <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>org.jenkins-ci.plugins</groupId>
             <artifactId>git-client</artifactId>
-            <version>3.13.0</version>
+            <version>4.1.0</version>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.jenkins-ci.plugins</groupId>
+            <artifactId>gitlab-plugin</artifactId>
+            <version>1.7.8</version>
             <optional>true</optional>
         </dependency>
         <dependency>
@@ -236,7 +242,7 @@
             <dependency>
                 <groupId>io.jenkins.plugins</groupId>
                 <artifactId>jaxb</artifactId>
-                <version>2.3.6-1</version>
+                <version>2.3.8-1</version>
             </dependency>
             <dependency>
                 <groupId>org.jenkins-ci.plugins.workflow</groupId>
@@ -247,7 +253,7 @@
             <dependency>
                 <groupId>org.jenkins-ci.plugins.workflow</groupId>
                 <artifactId>workflow-job</artifactId>
-                <version>1189.va_d37a_e9e4eda_</version>
+                <version>1282.ve6d865025906</version>
                 <optional>true</optional>
             </dependency>
             <dependency>
@@ -265,13 +271,13 @@
             <dependency>
                 <groupId>org.jenkins-ci.plugins</groupId>
                 <artifactId>script-security</artifactId>
-                <version>1189.vb_a_b_7c8fd5fde</version>
+                <version>1244.ve463715a_f89c</version>
                 <optional>true</optional>
             </dependency>
             <dependency>
                 <groupId>org.jenkins-ci.plugins</groupId>
                 <artifactId>display-url-api</artifactId>
-                <version>2.3.6</version>
+                <version>2.3.7</version>
                 <optional>true</optional>
             </dependency>
             <dependency>
@@ -289,19 +295,25 @@
             <dependency>
                 <groupId>org.jenkins-ci.plugins</groupId>
                 <artifactId>matrix-project</artifactId>
-                <version>772.v494f19991984</version>
+                <version>785.v06b_7f47b_c631</version>
                 <optional>true</optional>
             </dependency>
             <dependency>
                 <groupId>org.jenkins-ci.plugins</groupId>
                 <artifactId>scm-api</artifactId>
-                <version>621.vda_a_b_055e58f7</version>
+                <version>667.v8b_6e07cdc7f2</version>
                 <optional>true</optional>
             </dependency>
             <dependency>
                 <groupId>org.jenkins-ci.plugins</groupId>
                 <artifactId>jackson2-api</artifactId>
-                <version>2.13.4.20221013-295.v8e29ea_354141</version>
+                <version>2.15.2-350.v0c2f3f8fc595</version>
+                <optional>true</optional>
+            </dependency>
+            <dependency>
+                <groupId>org.jenkins-ci.plugins</groupId>
+                <artifactId>token-macro</artifactId>
+                <version>321.vd7cc1f2a_52c8</version>
                 <optional>true</optional>
             </dependency>
             <dependency>
@@ -368,7 +380,7 @@
             <dependency>
                 <groupId>org.jenkins-ci.plugins</groupId>
                 <artifactId>trilead-api</artifactId>
-                <version>1.67.vc3938a_35172f</version>
+                <version>2.84.v72119de229b_7</version>
                 <optional>true</optional>
             </dependency>
             <dependency>

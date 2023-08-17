@@ -1,7 +1,6 @@
 package com.rei.jenkins.systemdsl
 
 import java.nio.file.Files
-import java.nio.file.NoSuchFileException
 
 import hudson.util.Secret
 
@@ -14,12 +13,12 @@ import com.cloudbees.jenkins.plugins.awscredentials.AWSCredentialsImpl
 import com.cloudbees.jenkins.plugins.sshcredentials.impl.BasicSSHUserPrivateKey
 import com.cloudbees.plugins.credentials.Credentials
 import com.cloudbees.plugins.credentials.CredentialsScope
-import com.cloudbees.plugins.credentials.CredentialsStore
 import com.cloudbees.plugins.credentials.SecretBytes
 import com.cloudbees.plugins.credentials.SystemCredentialsProvider
 import com.cloudbees.plugins.credentials.domains.Domain
 import com.cloudbees.plugins.credentials.impl.CertificateCredentialsImpl
 import com.cloudbees.plugins.credentials.impl.UsernamePasswordCredentialsImpl
+import com.dabsquared.gitlabjenkins.connection.GitLabApiTokenImpl
 
 class CredentialsConfiguration extends DslSection {
 
@@ -86,6 +85,10 @@ class CredentialsConfiguration extends DslSection {
 
         void usernamePassword(String id, String username, String password, String description) {
             credentials += new UsernamePasswordCredentialsImpl(scope, id, description, username, password)
+        }
+
+        void gitlabApiToken(String id, String apiToken, String description) {
+            credentials += new GitLabApiTokenImpl(scope, id, description, Secret.fromString(apiToken))
         }
 
     }
